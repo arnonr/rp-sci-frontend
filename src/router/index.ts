@@ -126,15 +126,6 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/geo",
-        name: "geo",
-        component: () => import("@/views/Geo.vue"),
-        meta: {
-          pageTitle: "Geo",
-          breadcrumbs: ["Geo"],
-        },
-      },
-      {
         path: "/builder",
         name: "builder",
         component: () => import("@/views/LayoutBuilder.vue"),

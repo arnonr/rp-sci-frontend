@@ -52,7 +52,7 @@
             <div class="col-md-12">
               <span class="fw-bold">คำสำคัญ (Keyword) : </span>
               <span class="fst-italic">
-                {{ keyword }}
+                {{ item.keyword }}
               </span>
               <div class="separator separator-dotted my-2"></div>
             </div>
@@ -253,6 +253,16 @@
                 ><span class="fst-italic">คลิก</span></a
               >
               <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div class="mx-auto text-center mt-5">
+              <button
+                @click="generatePDF"
+                type="button"
+                class="btn btn-success"
+              >
+                พิมพ์ข้อมูล
+              </button>
             </div>
           </div>
         </div>
@@ -492,7 +502,6 @@ export default defineComponent({
       }
       return dayjs(date).locale("th").format("DD MMM BBBB");
     };
-
 
     // Return
     return {

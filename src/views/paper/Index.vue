@@ -59,7 +59,7 @@
 
     <div>
       <!-- Modal Detail ดูข้อมูล -->
-      <div id="detail-modal">
+      <!-- <div id="detail-modal">
         <DetailPage
           v-if="openDetailModal == true"
           :paper_id="item.id"
@@ -69,10 +69,10 @@
             }
           "
         />
-      </div>
+      </div> -->
 
       <!-- Modal Edit แก้ไขข้อมูล -->
-      <div id="edit-modal">
+      <!-- <div id="edit-modal">
         <EditPage
           v-if="openEditModal == true"
           :paper_id="item.id"
@@ -83,10 +83,10 @@
           "
           @reload="fetchItems"
         />
-      </div>
+      </div> -->
 
       <!-- Modal Add เพิ่มข้อมูล -->
-      <div id="add-modal">
+      <!-- <div id="add-modal">
         <AddPage
           v-if="openAddModal == true"
           @close-modal="
@@ -96,7 +96,7 @@
           "
           @reload="fetchItems"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -110,12 +110,12 @@ import dayjs from "dayjs";
 
 // Component
 import SearchComponent from "@/components/paper/Search.vue";
-import ListComponent from "@/components/complaint/List.vue";
+import ListComponent from "@/components/paper/List.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
-import EditPage from "@/views/new-complaint/Edit.vue";
-import AddPage from "@/views/new-complaint/Add.vue";
-import DetailPage from "@/views/new-complaint/DetailModal.vue";
-import Receive1Page from "@/views/new-complaint/Receive1.vue";
+// import EditPage from "@/views/new-complaint/Edit.vue";
+// import AddPage from "@/views/new-complaint/Add.vue";
+// import DetailPage from "@/views/new-complaint/DetailModal.vue";
+// import Receive1Page from "@/views/new-complaint/Receive1.vue";
 
 export default defineComponent({
   name: "paper",
@@ -123,10 +123,10 @@ export default defineComponent({
     SearchComponent,
     ListComponent,
     Preloader,
-    EditPage,
-    DetailPage,
-    Receive1Page,
-    AddPage,
+    // EditPage,
+    // DetailPage,
+    // Receive1Page,
+    // AddPage,
   },
   setup() {
     // UI Variable
@@ -192,6 +192,7 @@ export default defineComponent({
         }
       });
     };
+
     const onExport = async () => {};
 
     // Modal action

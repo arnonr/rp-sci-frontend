@@ -16,7 +16,7 @@
           href="https://jaray.police.go.th/2022/"
           target="_blank"
           class="text-gray-800 text-hover-primary"
-          >สำนักงานจเรตำรวจ</a
+          >คณะวิทยาศาสตร์ประยุกต์</a
         >
       </div>
       <!--end::Menu-->

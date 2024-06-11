@@ -65,10 +65,10 @@
                 <li>
                   <a
                     class="dropdown-item cursor-pointer"
+                    v-if="it.status_id != 2 && it.status_id != 4"
                     @click="
                       handleEdit({
                         id: it.id,
-                        complainant_id: it.complainant_id,
                       })
                     "
                     >แก้ไขข้อมูล</a

@@ -469,6 +469,21 @@ export default () => {
     },
   ];
 
+  const researcher_types = [
+    {
+      id: 1,
+      name: "หัวหน้าโครงการ",
+    },
+    {
+      id: 2,
+      name: "ที่ปรึกษา",
+    },
+    {
+      id: 3,
+      name: "ผู้ร่วมวิจัย",
+    },
+  ];
+
   return {
     publishes,
     actives,
@@ -482,5 +497,6 @@ export default () => {
     sections,
     positions,
     proceed_statuses,
+    researcher_types
   };
 };

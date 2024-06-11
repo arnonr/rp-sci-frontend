@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="modal-header" v-if="!isLoading">
-          <h3 class="modal-title">รายละเอียด {{ complaint_item.jcoms_no }}</h3>
+          <h3 class="modal-title">รายละเอียด</h3>
           <button
             @click="onClose({ reload: false })"
             type="button"
@@ -21,39 +21,238 @@
 
         <div class="modal-body" v-if="!isLoading">
           <div class="row">
+            <div class="col-md-12 mb-5">
+              <h4>ข้อมูลสาระสำคัญของโครงการ</h4>
+            </div>
+
             <div class="col-md-12">
-              <div class="row">
-                <!--  -->
-                <div class="accordion" id="myAccordion">
-                  <Section1 :complaint_item="complaint_item" />
+              <span class="fw-bold">ประเภทงานวิจัย : </span>
+              <span class="fst-italic">{{ item.paper_type_id.name }}</span>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
 
-                  <Section2
-                    :complaint_type="complaint_type"
-                    :complaint_item="complaint_item"
-                    :complainant_item="complainant_item"
-                    :new_item="new_item"
-                  />
+            <div class="col-md-12">
+              <span class="fw-bold">ชื่อโครงการ ภาษาไทย : </span>
+              <span class="fst-italic">{{ item.title_th }}</span>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
 
-                  <Section3
-                    :complaint_type="complaint_type"
-                    :complaint_item="complaint_item"
-                    :complainant_item="complainant_item"
-                    :new_item="new_item"
-                    :accused_item="accused_item"
-                    :complaint_file_attach="complaint_file_attach"
-                  />
+            <div class="col-md-12">
+              <span class="fw-bold">ชื่อโครงการ ภาษาอังกฤษ : </span>
+              <span class="fst-italic">{{ item.title_en }}</span>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
 
-                  <div class="mx-auto text-center">
-                    <button
-                      @click="generatePDF"
-                      type="button"
-                      class="btn btn-success"
-                    >
-                      พิมพ์ข้อมูลส่วนบุคคล
-                    </button>
-                  </div>
+            <div class="col-md-12">
+              <span class="fw-bold">บทคัดย่อ (Abstract) : </span>
+              <div class="fst-italic" v-html="item.abstract"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold">คำสำคัญ (Keyword) : </span>
+              <span class="fst-italic">
+                {{ keyword }}
+              </span>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+            <div class="col-md-12">
+              <span class="fw-bold">ภาควิชา : </span>
+              <span class="fst-italic">{{ item.department_id?.name }}</span>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div>
+              <hr class="my-6" />
+              <h6>คณะผู้วิจัย</h6>
+              <div v-for="(rc, idx) in researcher" :key="idx" class="row">
+                <div class="col-md-6 mt-10">
+                  <span class="fw-bold">คนที่ {{ idx + 1 }} : </span>
+                  <span class="fst-italic">
+                    {{ rc.prefix_name + "" + rc.firstname + " " + rc.surname }}
+                  </span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-6 mt-10">
+                  <span class="fw-bold">หน่วยงาน : </span>
+                  <span class="fst-italic">{{
+                    rc.department_id
+                      ? rc.department_id?.name
+                      : rc.department_text
+                  }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-6">
+                  <span class="fw-bold">เบอร์โทรศัพท์ : </span>
+                  <span class="fst-italic">{{ rc.phone_number }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-6">
+                  <span class="fw-bold">ความชำนาญ/ความสนใจพิเศษ : </span>
+                  <span class="fst-italic">{{ rc.expertise }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-6">
+                  <span class="fw-bold">ประเภท : </span>
+                  <span class="fst-italic">{{ rc.researcher_type?.name }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-6">
+                  <span class="fw-bold">สัดส่วน (%) : </span>
+                  <span class="fst-italic">{{ rc.percentage }}</span>
+                  <div class="separator separator-dotted my-2"></div>
                 </div>
               </div>
+              <hr class="my-6" />
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold"
+                >ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ :
+              </span>
+              <div class="fst-italic" v-html="item.history"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold">วัตถุประสงค์ของโครงการวิจัย : </span>
+              <div class="fst-italic" v-html="item.objective"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold">ขอบเขตของการวิจัย : </span>
+              <div class="fst-italic" v-html="item.scope"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold">ผลงานวิจัยที่เกี่ยวข้อง : </span>
+              <div class="fst-italic" v-html="item.review_literature"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold">ระเบียบวิธีวิจัย : </span>
+              <div class="fst-italic" v-html="item.method"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold">ประโยชน์ที่คาดว่าจะได้รับ : </span>
+              <div class="fst-italic" v-html="item.benefit"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div>
+              <hr class="my-6" />
+              <h6>ขั้นตอนและระยะเวลาของแผนดำเนินงาน</h6>
+              <div v-for="(ml, idx) in method_list" :key="idx" class="row">
+                <div class="col-md-12 mt-10">
+                  <span class="fw-bold">ลำดับที่ {{ idx + 1 }} : </span>
+                  <span class="fst-italic">
+                    {{ ml.detail }}
+                  </span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-6 mt-10">
+                  <span class="fw-bold">วันที่เริ่ม: </span>
+                  <span class="fst-italic">{{
+                    convertDate(ml.start_date)
+                  }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-6 mt-10">
+                  <span class="fw-bold">วันที่สิ้นสุด: </span>
+                  <span class="fst-italic">{{ convertDate(ml.end_date) }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+              </div>
+              <hr class="my-6" />
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold"
+                >สถานที่ทำการทดลอง และ/หรือเก็บข้อมูล :
+              </span>
+              <div class="fst-italic" v-html="item.location"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div>
+              <hr class="my-6" />
+              <h6>งบประมาณในการดำเนินงานวิจัย</h6>
+              <h6 class="mt-10">หมวดค่าตอบแทน เฉพาะค่าจ้างผู้ช่วยวิจัย</h6>
+              <div v-for="(bg, idx) in budget" :key="idx" class="row">
+                <div class="col-md-9 mt-5">
+                  <span class="fw-bold">ลำดับที่ {{ idx + 1 }} : </span>
+                  <span class="fst-italic">
+                    {{ bg.detail }}
+                  </span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-3 mt-5">
+                  <span class="fw-bold">จำนวนเงิน : </span>
+                  <span class="fst-italic">{{ bg.amount }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+              </div>
+              <hr class="my-6" />
+            </div>
+
+            <div v-if="budget2.length != 0">
+              <h6>
+                หมวดค่าใช้สอย เช่น ค่าพาหนะ ค่าจ้างเหมาต่าง ๆ เช่น
+                ค่าจัดทำรูปเล่ม
+              </h6>
+              <div v-for="(bg, idx) in budget2" :key="idx" class="row">
+                <div class="col-md-9 mt-5">
+                  <span class="fw-bold">ลำดับที่ {{ idx + 1 }} : </span>
+                  <span class="fst-italic">
+                    {{ bg.detail }}
+                  </span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-3 mt-5">
+                  <span class="fw-bold">จำนวนเงิน : </span>
+                  <span class="fst-italic">{{ bg.amount }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+              </div>
+              <hr class="my-6" />
+            </div>
+
+            <div v-if="budget3.length != 0">
+              <h6>หมวดค่าวัสดุ (แจกแจงรายละเอียดราคาต่อหน่วยอย่างชัดเจน)</h6>
+              <div v-for="(bg, idx) in budget3" :key="idx" class="row">
+                <div class="col-md-9 mt-5">
+                  <span class="fw-bold">ลำดับที่ {{ idx + 1 }} : </span>
+                  <span class="fst-italic">
+                    {{ bg.detail }}
+                  </span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+                <div class="col-md-3 mt-5">
+                  <span class="fw-bold">จำนวนเงิน : </span>
+                  <span class="fst-italic">{{ bg.amount }}</span>
+                  <div class="separator separator-dotted my-2"></div>
+                </div>
+              </div>
+              <hr class="my-6" />
+            </div>
+
+            <div class="col-md-12">
+              <span class="fw-bold">รายการเอกสารอ้างอิงหรือบรรณานุกรม : </span>
+              <div class="fst-italic" v-html="item.references"></div>
+              <div class="separator separator-dotted my-2"></div>
+            </div>
+
+            <div v-for="(fa, idx) in file_attach" :key="idx">
+              <span class="fw-bold">ไฟล์แนบ {{ idx + 1 }} : </span>
+              <a :href="fa.filename" target="_blank"
+                ><span class="fst-italic">คลิก</span></a
+              >
+              <div class="separator separator-dotted my-2"></div>
             </div>
           </div>
         </div>
@@ -62,7 +261,7 @@
     </div>
 
     <!-- PDF -->
-    <vue3-html2pdf
+    <!-- <vue3-html2pdf
       :show-layout="false"
       :float-layout="true"
       :enable-download="true"
@@ -86,8 +285,6 @@
           "
           class="generate-pdf"
         >
-          <!-- <SectionPDF1 :complaint_item="complaint_item" /> -->
-
           <SectionPDF2
             :complaint_type="complaint_type"
             :complaint_item="complaint_item"
@@ -105,7 +302,7 @@
           />
         </div>
       </template>
-    </vue3-html2pdf>
+    </vue3-html2pdf> -->
   </div>
 </template>
 
@@ -128,21 +325,11 @@ import useComplaintTypeData from "@/composables/useComplaintTypeData";
 import useBasicData from "@/composables/useBasicData";
 import useStateData from "@/composables/useStateData";
 import Preloader from "@/components/preloader/Preloader.vue";
-import Section1 from "@/components/complaint/detail/Section1.vue";
-import Section2 from "@/components/complaint/detail/Section2.vue";
-import Section3 from "@/components/complaint/detail/Section3.vue";
-import SectionPDF1 from "@/components/complaint/detail/SectionPDF1.vue";
-import SectionPDF2 from "@/components/complaint/detail/SectionPDF2.vue";
-import SectionPDF3 from "@/components/complaint/detail/SectionPDF3.vue";
 
 export default defineComponent({
   name: "complaint-detail-modal",
   props: {
-    complaint_id: {
-      type: Number,
-      required: true,
-    },
-    complainant_id: {
+    paper_id: {
       type: Number,
       required: true,
     },
@@ -150,14 +337,8 @@ export default defineComponent({
   components: {
     dayjs,
     Preloader,
-    Section1,
-    Section2,
-    Section3,
     Vue3Html2pdf,
     jsPDF,
-    SectionPDF1,
-    SectionPDF2,
-    SectionPDF3,
   },
   setup(props, { emit }) {
     // UI
@@ -167,93 +348,106 @@ export default defineComponent({
     const html2Pdf = ref<any>(null);
 
     // Variable
-    const selectOptions = ref({
-      complaint_channels: <any>[],
-      card_types: useBasicData().card_types,
-      is_anonymouses: useBasicData().is_anonymouses,
-      day_times: useBasicData().day_times,
-      states: useStateData().states,
-    });
+    const selectOptions = ref({});
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
-    const complaint_item = reactive<any>({});
-    const complainant_item = reactive<any>({});
-    const accused_item = reactive<any>([]);
-    const complaint_file_attach = reactive<any>([]);
-    const complaint_type = reactive<any>({
-      name_th: "",
-      id: null,
-    });
-
-    const new_item = reactive<any>({
-      is_anonymous: null,
-      card_type: null,
-      birthday: null,
-      organization_all: [],
-      markerDetails: { id: 1, position: { lat: null, lng: null } },
-      complaint_channel_all: "",
-      incident_date: "",
-      evidence_url: [],
-    });
+    const item = reactive<any>({});
+    const user_item = reactive<any>({});
+    const researcher_types = useBasicData().researcher_types;
+    const budget = reactive<any[]>([] as any[]);
+    const budget2 = reactive<any[]>([] as any[]);
+    const budget3 = reactive<any[]>([] as any[]);
+    const researcher = reactive<any[]>([] as any[]);
+    const method_list = reactive<any[]>([] as any[]);
+    const file_attach = reactive<any>([]);
 
     const generatePDF = () => {
       html2Pdf.value.generatePdf();
     };
 
-    // Fetch
-    const fetchComplaint = async () => {
+    //Fetch
+    const fetchUser = async () => {
       try {
-        const { data } = await ApiService.query(
-          "complaint/" + props.complaint_id,
-          {}
-        );
-
-        Object.assign(complaint_item, data.data);
-        Object.assign(
-          complaint_type,
-          useComplaintTypeData().complaint_types.find(
-            (x: any) => x.id == complaint_item.complaint_type_id
-          )
-        );
+        const { data } = await ApiService.query("user/" + userData.data.id, {});
+        Object.assign(user_item, {
+          ...data.data,
+          department_id:
+            data.data.department_id != null
+              ? {
+                  name: data.data.department.name,
+                  id: data.data.department_id,
+                }
+              : null,
+        });
       } catch (error) {
         console.log(error);
       }
     };
 
-    const fetchComplainant = async () => {
+    const fetchItem = async () => {
       try {
-        const { data } = await ApiService.query(
-          "complainant/" + props.complainant_id,
-          {}
-        );
-
-        Object.assign(complainant_item, data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const fetchAccused = async () => {
-      try {
-        const { data } = await ApiService.query("accused/", {
-          params: {
-            complaint_id: complaint_item.id,
-          },
+        const { data } = await ApiService.query("paper/" + props.paper_id, {});
+        Object.assign(item, {
+          ...data.data,
+          department_id:
+            data.data.department_id != null
+              ? {
+                  name: data.data.department.name,
+                  id: data.data.department_id,
+                }
+              : null,
+          paper_type_id:
+            data.data.paper_type_id != null
+              ? {
+                  name: data.data.paper_type.name,
+                  id: data.data.paper_type_id,
+                }
+              : null,
         });
 
-        accused_item.length = 0;
-        Object.assign(accused_item, data.data);
+        budget.length = 0;
+        Object.assign(budget, data.data.budget);
+
+        budget2.length = 0;
+        Object.assign(budget2, data.data.budget2);
+
+        budget3.length = 0;
+        Object.assign(budget3, data.data.budget3);
+
+        method_list.length = 0;
+        Object.assign(method_list, data.data.method_list);
+
+        researcher.length = 0;
+        let new_rs = data.data.researcher.map((el: any) => {
+          if (el.department_id != null) {
+            el.department_id = {
+              id: el.department_id,
+              name: el.department.name,
+            };
+          }
+
+          if (el.researcher_type != null) {
+            el.researcher_type = researcher_types.find((x: any) => {
+              return x.id == el.researcher_type;
+            });
+          }
+
+          return el;
+        });
+        Object.assign(researcher, new_rs);
       } catch (error) {
         console.log(error);
       }
     };
 
-    const fetchComplaintFileAttach = async () => {
+    const fetchFileAttach = async () => {
       try {
-        const { data } = await ApiService.query("complaint-file-attach/", {
-          params: { complaint_id: complaint_item.id },
+        let params = { paper_id: props.paper_id };
+
+        const { data } = await ApiService.query("file-attach/", {
+          params: { ...params },
         });
-        complaint_file_attach.length = 0;
-        Object.assign(complaint_file_attach, data.data);
+        Object.assign(file_attach, data.data);
       } catch (error) {
         console.log(error);
       }
@@ -268,76 +462,6 @@ export default defineComponent({
       emit("close-modal");
     };
 
-    const beforeShow = () => {
-      new_item.complaint_channel_all = "";
-      if (complaint_item.channel_history.length > 0) {
-        complaint_item.channel_history.forEach((el: any) => {
-          let comma_text = "";
-          if (new_item.complaint_channel_all.length != 0) {
-            comma_text = " , ";
-          }
-          new_item.complaint_channel_all =
-            new_item.complaint_channel_all + comma_text + el.channel?.name_th;
-        });
-      }
-
-      new_item.is_anonymous = selectOptions.value.is_anonymouses.find(
-        (x: any) => {
-          return x.value == complaint_item.is_anonymous;
-        }
-      );
-
-      if (complaint_item.is_anonymous == 1) {
-        new_item.card_type = selectOptions.value.card_types.find((x: any) => {
-          return x.value == complainant_item.card_type;
-        });
-
-        new_item.birthday = complainant_item.birthday
-          ? dayjs(complainant_item.birthday).locale("th").format("DD MMMM BBBB")
-          : "";
-
-        complainant_item.address_all = `${complainant_item.sub_district.name_th} > ${complainant_item.district.name_th} > ${complainant_item.province.name_th} > ${complainant_item.postal_code}`;
-      }
-
-      complaint_item.address_all = "";
-      if (Object.keys(complaint_item.sub_district).length != 0) {
-        complaint_item.address_all = `${complaint_item.sub_district?.name_th} > ${complaint_item.district?.name_th} > ${complaint_item.province?.name_th} > ${complaint_item.postal_code}`;
-      }
-
-      if (complaint_item.incident_datetime) {
-        new_item.incident_date = dayjs(complaint_item.incident_datetime)
-          .utc()
-          .locale("th")
-          .format("DD MMM BBBB HH:mm");
-
-        new_item.day_time = selectOptions.value.day_times.find((x: any) => {
-          return x.value == complaint_item.day_time;
-        });
-      }
-
-      if (
-        complaint_item.location_coordinates != "" &&
-        complaint_item.location_coordinates != null
-      ) {
-        const [lat, lng] = complaint_item.location_coordinates.split(",");
-        new_item.markerDetails = {
-          id: 1,
-          position: { lat: Number(lat), lng: Number(lng) },
-        };
-      }
-
-      complaint_item.state = selectOptions.value.states.find(
-        (x: any) => x.id === complaint_item.state_id
-      );
-
-      new_item.evidence_url =
-        complaint_item.evidence_url != "" && complaint_item.evidence_url != null
-          ? complaint_item.evidence_url
-              .split(",")
-              .map((it: any) => it.replace(/(^'|'$)/g, ""))
-          : [];
-    };
-
     // Mounted
     onMounted(async () => {
       mainModalObj.value = new Modal(mainModalRef.value, {});
@@ -346,14 +470,10 @@ export default defineComponent({
         onClose({ reload: false })
       );
 
-      await fetchComplaint();
-      await fetchComplainant();
-      await fetchAccused();
-      await fetchComplaintFileAttach();
-
+      await fetchUser();
+      await fetchItem();
+      await fetchFileAttach();
       isLoading.value = false;
-
-      beforeShow();
     });
 
     onUnmounted(() => {
@@ -366,19 +486,29 @@ export default defineComponent({
       emit("close-modal");
     });
 
+    const convertDate = (date: any) => {
+      if (!date) {
+        return "";
+      }
+      return dayjs(date).locale("th").format("DD MMM BBBB");
+    };
+
+
     // Return
     return {
       isLoading,
       mainModalRef,
-      complaint_item,
-      complainant_item,
-      accused_item,
-      complaint_file_attach,
-      complaint_type,
-      new_item,
+      convertDate,
+      item,
+      file_attach,
       onClose,
       generatePDF,
       html2Pdf,
+      researcher,
+      method_list,
+      budget,
+      budget2,
+      budget3,
     };
   },
 });

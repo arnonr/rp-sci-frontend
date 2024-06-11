@@ -4,12 +4,6 @@ const MainMenuConfig: Array<MenuItem> = [
   {
     pages: [
       {
-        heading: "ข้อมูลส่วนตัว",
-        route: "/profile",
-        keenthemesIcon: "element-11",
-        bootstrapIcon: "bi-app-indicator",
-      },
-      {
         heading: "รายการเสนอโครงการวิจัย",
         route: "/paper",
         keenthemesIcon: "element-11",

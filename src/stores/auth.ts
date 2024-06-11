@@ -37,16 +37,15 @@ export const useAuthStore = defineStore("auth", () => {
 
   function login(credentials: User) {
     return ApiService.post("user/login", credentials)
-      .then(({ data }) => {
-        setAuth(data);
+      .then((response: any) => {
+        setAuth(response);
         localStorage.setItem(
           "userData",
           JSON.stringify({
-            ...data.data,
+            ...response,
           })
         );
-        localStorage.setItem('id_token',data.data.token)
-       
+        localStorage.setItem("id_token", response.token);
       })
       .catch(({ response }) => {
         setError(response.data.msg);
@@ -56,7 +55,7 @@ export const useAuthStore = defineStore("auth", () => {
   function logout() {
     purgeAuth();
     localStorage.removeItem("userData");
-    localStorage.removeItem('id_token')
+    localStorage.removeItem("id_token");
   }
 
   function register(credentials: User) {

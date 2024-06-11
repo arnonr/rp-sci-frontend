@@ -1,97 +1,90 @@
 <template>
-  <div
-    class="modal fade"
-    tabindex="-1"
-    ref="mainModalRef"
-    id="main-modal"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title">เพิ่มข้อมูล</h3>
-          <button
-            @click="onClose({ reload: false })"
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
+  <div>
+    <div class="card" v-if="item">
+      <div class="card-body">
+        <form-wizard
+          color="#800001"
+          ref="formStep"
+          finishButtonText="บันทึก"
+          backButtonText="ย้อนกลับ"
+          nextButtonText="ถัดไป"
+          step-size="xs"
+          id="form"
+          @on-change="onTabChange"
+          @on-complete="onComplete"
+        >
+          <Tab1
+            :item="item"
+            :budget="budget"
+            :budget2="budget2"
+            :budget3="budget3"
+            :researcher="researcher"
+            :method_list="method_list"
+            :r="r"
+          />
 
-        <div class="modal-body">
-          <form-wizard
-            color="#800001"
-            ref="formStep"
-            finishButtonText="บันทึก"
-            backButtonText="ย้อนกลับ"
-            nextButtonText="ถัดไป"
-            step-size="xs"
-            id="form"
-            @on-change="onTabChange"
-            @on-complete="onComplete"
-          >
-            <Tab1
-              :complaint_item="item"
-              :complainant_item="complainant_item"
-              :complaint_type="complaint_type"
-            />
+          <Tab2
+            :tab_index="tab_index"
+            :item="item"
+            :budget="budget"
+            :budget2="budget2"
+            :budget3="budget3"
+            :researcher="researcher"
+            :method_list="method_list"
+            :r="r"
+          />
 
-            <Tab2
-              :complaint_item="item"
-              :complaint_type="complaint_type"
-              :accused="accused"
-              :r="r"
-            />
+          <template #footer="props">
+            <div class="wizard-footer-left">
+              <button
+                v-if="props.activeTabIndex > 0"
+                @click.native="props.prevTab()"
+                class="btn text-white float-left"
+                style="background-color: #800001"
+                :disabled="isLoading"
+              >
+                ย้อนกลับ
+              </button>
+            </div>
 
-            <Tab3
-              :tab_index="tab_index"
-              :complaint_item="item"
-              :complainant_item="complainant_item"
-              :accused="accused"
-              :complaint_type="complaint_type"
-              :r="r"
-            />
+            <div class="wizard-footer-right">
+              <button
+                v-if="!props.isLastStep"
+                @click.native="props.nextTab()"
+                class="btn text-white"
+                style="background-color: #800001"
+                :disabled="isLoading"
+              >
+                ถัดไป
+              </button>
 
-            <template #footer="props">
-              <div class="wizard-footer-left">
-                <button
-                  v-if="props.activeTabIndex > 0"
-                  @click.native="props.prevTab()"
-                  class="btn text-white float-left"
-                  style="background-color: #800001"
-                >
-                  ย้อนกลับ
-                </button>
-              </div>
+              <button
+                v-else
+                @click.native="onComplete(0)"
+                class="finish-button btn text-white"
+                style="background-color: #800001"
+                :disabled="isLoading"
+              >
+                {{ props.isLastStep ? "บันทึก" : "Next" }}
+              </button>
 
-              <div class="wizard-footer-right">
-                <button
-                  v-if="!props.isLastStep"
-                  @click.native="props.nextTab()"
-                  class="btn text-white"
-                  style="background-color: #800001"
-                >
-                  ถัดไป
-                </button>
-
-                <button
-                  v-else
-                  @click.native="onComplete"
-                  class="finish-button btn text-white"
-                  style="background-color: #800001"
-                >
-                  {{ props.isLastStep ? "บันทึก" : "Next" }}
-                </button>
-              </div>
-            </template>
-          </form-wizard>
-        </div>
-        <Preloader
-          :isLoading="isLoading != undefined ? isLoading : false"
-          :position="'absolute'"
-        />
+              <button
+                v-if="props.isLastStep"
+                @click.native="onComplete(1)"
+                class="finish-button btn text-white ms-4"
+                style="background-color: green"
+                :disabled="isLoading"
+              >
+                {{ "ส่งข้อมูล" }}
+              </button>
+            </div>
+          </template>
+        </form-wizard>
       </div>
+      <Preloader
+        :isLoading="isLoading != undefined ? isLoading : false"
+        :position="'fix'"
+      />
     </div>
   </div>
 </template>
@@ -103,12 +96,9 @@ import ApiService from "@/core/services/ApiService";
 // Import FormWizard
 import { FormWizard } from "vue3-form-wizard";
 import "vue3-form-wizard/dist/style.css";
-// Import Modal Bootstrap
-import { Modal } from "bootstrap";
 // Use Toast Composables
 import useToast from "@/composables/useToast";
-// Use Address Composables
-import useComplaintTypeData from "@/composables/useComplaintTypeData";
+import { useRouter } from "vue-router";
 
 // Import Dayjs
 import dayjs from "dayjs";
@@ -119,152 +109,269 @@ dayjs.extend(buddhistEra);
 dayjs.extend(customParseFormat);
 
 // Import Component
-import Tab1 from "@/components/complaint/form/Tab1.vue";
-import Tab2 from "@/components/complaint/form/Tab2Add.vue";
-import Tab3 from "@/components/complaint/form/Tab3.vue";
+import Tab1 from "@/components/paper/Tab1Add.vue";
+import Tab2 from "@/components/paper/Tab2.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
 
+// Import Yup Validate
+import * as Yup from "yup";
+
 export default defineComponent({
-  name: "edit-complaint",
-  props: {
-    complaint_id: Number,
-    complainant_id: Number,
-  },
+  name: "add-paper",
   components: {
     FormWizard,
     Tab1,
     Tab2,
-    Tab3,
     Preloader,
   },
-  setup(props, { emit }) {
+  setup() {
     // UI Variable
+    const router = useRouter();
     const isLoading = ref<any>(false);
-    const mainModalRef = ref<any>(null);
-    const mainModalObj = ref<any>(null);
+
     const tab_index = ref(0);
     const onTabChange = (prevIndex: number, nextIndex: number) => {
       tab_index.value = nextIndex;
     };
 
     // Variable
-    const complaint_type = ref({ id: 1, name_th: "ร้องเรียน" });
     const r = (Math.random() + 1).toString(36).substring(7);
-
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
     // Item Variable
     const item = reactive<any>({
-      is_anonymous: 1,
-      complaint_title: "",
-      house_number: "",
-      building: "",
-      moo: "",
-      soi: "",
-      road: "",
-      address_all: null,
-      incident_location: "",
-      incident_date: null,
-      incident_time: null,
-      day_time: null,
-      location_coordinates: "",
-      complaint_detail: "",
-      complaint_channel_id: {
-        id: 8,
-        name_th: "JCOM ร้องเรียน/แจ้งเบาะแส",
-      },
-      inspector_id: null,
-      bureau_id: null,
-      division_id: null,
-      agency_id: null,
-      topic_type_id: null,
-      notice_type: null,
-      complaint_topic: null,
-      complaint_channel_all: [],
-      evidence_url: "",
-      channel_history_text: "",
-      complaint_type_id: { id: 1, name_th: "ร้องเรียน" },
-      //   state_id
+      rp_no: "",
+      user_id: null,
+      title_th: "",
+      title_en: "",
+      abstract: "",
+      keyword: "",
+      department_id: null,
+      paper_type_id: null,
+      history: "",
+      objective: "",
+      scope: "",
+      review_literature: "",
+      method: "",
+      benefit: "",
+      location: "",
+      references: "",
+      status_id: null,
+      sended_at: null,
+      sended_user_id: null,
     });
+    const user_item = reactive<any>({});
 
-    const complainant_item = reactive<any>({
-      phone_number: "",
-      card_type: null,
-      id_card: "",
-      prefix_name_id: null,
-      firstname: "",
-      lastname: "",
-      birthday: "",
-      occupation_text: "",
-      house_number: "",
-      building: "",
-      moo: "",
-      soi: "",
-      road: "",
-      address_all: null,
-      card_photo: [],
-      email: "",
-      line_id: "",
-      card_photo_old: null,
-    });
-
-    const accused = reactive<any[]>([
-      {
-        id: null,
-        prefix_name_id: null,
-        firstname: "",
-        lastname: "",
-        position_id: null,
-        section_id: null,
-        agency_id: null,
-        inspector_id: null,
-        bureau_id: null,
-        division_id: null,
-        complaint_id: null,
-        type: null,
-        detail: null,
-        organization_all: null,
-      },
-    ] as any[]);
-
-    const accused_old = reactive([
-      {
-        id: null,
-        prefix_name_id: null,
-        firstname: "",
-        lastname: "",
-        position_id: null,
-        section_id: null,
-        agency_id: null,
-        inspector_id: null,
-        bureau_id: null,
-        division_id: null,
-        complaint_id: null,
-        type: null,
-        detail: null,
-        organization_all: null,
-      },
-    ] as any[]);
-
-    //Fetch
-
-    // Event
-    const onClose = ({ reload = false }: { reload?: boolean }) => {
-      mainModalObj.value.hide();
-      if (reload === true) {
-        emit("reload");
-      }
-      emit("close-modal");
+    const budget_default = {
+      detail: "",
+      amount: null,
+      paper_id: null,
     };
 
-    const onComplete = async () => {
+    const budget = reactive<any[]>([
+      {
+        ...budget_default,
+      },
+    ] as any[]);
+
+    const budget2 = reactive<any[]>([
+      {
+        ...budget_default,
+      },
+    ] as any[]);
+
+    const budget3 = reactive<any[]>([
+      {
+        ...budget_default,
+      },
+    ] as any[]);
+
+    const budget_old = reactive([
+      {
+        ...budget_default,
+      },
+    ] as any[]);
+
+    // researcher
+    const researcher_default = {
+      prefix_name: "",
+      firstname: "",
+      surname: "",
+      department_id: null,
+      department_text: "",
+      phone_number: "",
+      expertise: "",
+      researcher_type: null,
+      percentage: null,
+      paper_id: null,
+    };
+
+    const researcher = reactive<any[]>([
+      {
+        ...researcher_default,
+      },
+    ] as any[]);
+
+    const researcher_old = reactive([
+      {
+        ...researcher_default,
+      },
+    ] as any[]);
+
+    // researcher
+    const method_list_default = {
+      start_date: null,
+      end_date: null,
+      detail: "",
+      paper_id: null,
+    };
+
+    const method_list = reactive<any[]>([
+      {
+        ...method_list_default,
+      },
+    ] as any[]);
+
+    const method_list_old = reactive([
+      {
+        ...method_list_default,
+      },
+    ] as any[]);
+
+    // Validate Schema
+    const validationItemSchema = Yup.object().shape({
+      title_th: Yup.string()
+        .required("${path} จำเป็นต้องระบุ")
+        .label("ชื่อโครงการ ภาษาไทย"),
+      title_en: Yup.string()
+        .required("${path} จำเป็นต้องระบุ")
+        .label("ชื่อโครงการ ภาษาอังกฤษ"),
+      abstarct: Yup.string().nullable().label(""),
+      keyword: Yup.string().nullable().label(""),
+      history: Yup.string().nullable().label(""),
+      objective: Yup.string().nullable().label(""),
+    });
+
+    const validationBudgetSchema = Yup.object().shape({
+      detail: Yup.object().nullable().label("รายละเอียด"),
+      amount: Yup.number().nullable().label("จำนวนเงิน"),
+    });
+
+    // errors
+    const errors_default = {
+      title_th: { error: 0, text: "" },
+      title_en: { error: 0, text: "" },
+      abstarct: { error: 0, text: "" },
+      paper_type_id: { error: 0, text: "" },
+      abstract: { error: 0, text: "" },
+      references: { error: 0, text: "" },
+      location: { error: 0, text: "" },
+      benefit: { error: 0, text: "" },
+      method: { error: 0, text: "" },
+      review_literature: { error: 0, text: "" },
+      objective: { error: 0, text: "" },
+      history: { error: 0, text: "" },
+      scope: { error: 0, text: "" },
+      department_id: { error: 0, text: "" },
+    };
+    const errors = reactive<any>({
+      ...errors_default,
+    });
+
+    // budget_errors
+    const budget_errors_default = {
+      detail: { error: 0, text: "" },
+      amount: { error: 0, text: "" },
+    };
+    const budget_errors = reactive<any>({
+      ...budget_errors_default,
+    });
+
+    const researcher_errors_default = {
+      prefix_name: { error: 0, text: "" },
+      firstname: { error: 0, text: "" },
+      surname: { error: 0, text: "" },
+      department_id: { error: 0, text: "" },
+      department_text: { error: 0, text: "" },
+      phone_number: { error: 0, text: "" },
+      expertise: { error: 0, text: "" },
+      researcher_type: { error: 0, text: "" },
+      percentage: { error: 0, text: "" },
+    };
+    const researcher_errors = reactive<any>({
+      ...researcher_errors_default,
+    });
+
+    const method_list_errors_default = {
+      start_date: { error: 0, text: "" },
+      end_date: { error: 0, text: "" },
+      detail: { error: 0, text: "" },
+    };
+    const method_list_errors = reactive<any>({
+      ...method_list_errors_default,
+    });
+
+    //Fetch
+    const fetchUser = async () => {
+      try {
+        const { data } = await ApiService.query("user/" + userData.data.id, {});
+        Object.assign(user_item, {
+          ...data.data,
+          department_id:
+            data.data.department_id != null
+              ? {
+                  name: data.data.department.name,
+                  id: data.data.department_id,
+                }
+              : null,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // Event
+
+    const onTab1Validate = async () => {
+      Object.assign(errors, {
+        ...errors_default,
+      });
+
+      Object.assign(budget_errors, {
+        ...budget_errors_default,
+      });
+
+      try {
+        await validationItemSchema.validate(item, {
+          abortEarly: false,
+        });
+      } catch (err: any) {
+        err.inner.forEach((error: any) => {
+          const fieldName = error.path;
+          const errorMessage = error.message;
+          errors[fieldName].error = 1;
+          errors[fieldName].text = errorMessage;
+        });
+        console.log(errors);
+        useToast("ระบุข้อมูลไม่ครบถ้วน", "error");
+        return false;
+      }
+
+      return true;
+    };
+
+    const onComplete = async (is_send: number) => {
       try {
         isLoading.value = true;
-        await onSaveComplainant();
-        await onSaveComplaint();
-        await onSaveAccused();
+        await onSavePaper(is_send);
+        await onSaveResearcher();
+        await onSaveMethodList();
+        await onSaveBudget();
+        await onSaveBudget2();
+        await onSaveBudget3();
         isLoading.value = false;
+
         useToast("บันทึกข้อมูลเสร็จสิ้น");
-        // useToast("บันทึกข้อมูลเสร็จสิ้น", "success","top","right");
-        onClose({ reload: true });
+        router.push({ name: "paper" });
       } catch (error) {
         isLoading.value = false;
         useToast("เกิดข้อผิดพลาดในการบันทึกข้อมูล", "error");
@@ -272,143 +379,34 @@ export default defineComponent({
       }
     };
     // Save Event
-    const onSaveComplainant = async () => {
-      //
-      let data_complainant_item: any = {
-        card_photo:
-          complainant_item.card_photo.length != 0
-            ? complainant_item.card_photo
-            : undefined,
-        card_type: complainant_item.card_type
-          ? complainant_item.card_type?.value
-          : undefined,
-        id_card: complainant_item.id_card,
-        prefix_name_id: complainant_item.prefix_name_id
-          ? complainant_item.prefix_name_id?.id
-          : undefined,
-        firstname: complainant_item.firstname,
-        lastname: complainant_item.lastname,
-        birthday: complainant_item.birthday
-          ? dayjs(complainant_item.birthday).format("YYYY-MM-DD")
-          : undefined,
-        occupation_id: undefined,
-        occupation_text: complainant_item.occupation_text,
-        phone_number: complainant_item.phone_number,
-        email: complainant_item.email,
-        line_id: complainant_item.line_id,
-        house_number: complainant_item.house_number,
-        building: complainant_item.building,
-        moo: complainant_item.moo,
-        soi: complainant_item.soi,
-        road: complainant_item.road,
-        postal_code: complainant_item.postal_code,
-        sub_district_id: complainant_item.sub_district_id,
-        district_id: complainant_item.district_id,
-        province_id: complainant_item.province_id,
-        id: complainant_item.id,
-        complainant_type: item.id == 4 ? 2 : 1,
-        position_id: complaint_type.value.id == 4 ? null : null,
-        section_id: complaint_type.value.id == 4 ? null : null,
-        inspection_id: complaint_type.value.id == 4 ? null : null,
-        bureau_id: complaint_type.value.id == 4 ? null : null,
-        division_id: complaint_type.value.id == 4 ? null : null,
-        agency_id: complaint_type.value.id == 4 ? null : null,
-        // updated_by: item.firstname + " " + props.item.lastname,
+    const onSavePaper = async (is_send: number) => {
+      let data_item: any = {
+        title_th: item.title_th,
+        title_en: item.title_en,
+        abstract: item.abstract,
+        keyword: item.keyword,
+        department_id: item.department_id?.id,
+        paper_type_id: item.paper_type_id?.id,
+        history: item.history,
+        objective: item.objective,
+        scope: item.scope,
+        review_literature: item.review_literature,
+        method: item.method,
+        benefit: item.benefit,
+        location: item.location,
+        references: item.references,
+        status_id: 1,
+        sended_at: dayjs().format("YYYY-MM-DD"),
+        sended_user_id: userData.data.id,
+        user_id: userData.data.id,
+        is_send: is_send,
       };
 
-      if (item?.is_anonymous == 2) {
-        data_complainant_item = {
-          phone_number: complainant_item.phone_number,
-          updated_by: complainant_item.firstname
-            ? complainant_item.firstname + " " + complainant_item.lastname
-            : complainant_item.phone_number,
-          complainant_type: item?.id == 4 ? 2 : 1,
-        };
+      if (is_send == 1) {
+        data_item["status_id"] = 2;
       }
 
-      let api = {
-        type: "postFormData",
-        url: "complainant/",
-      };
-
-      let check_duplicate_complainant = await ApiService.query("complainant/", {
-        params: { phone_number: complainant_item.phone_number },
-      }).then(({ data }) => {
-        if (data.msg != "success") {
-          throw new Error("ERROR");
-        }
-        return data.data;
-      });
-
-      if (check_duplicate_complainant) {
-        api.type = "putFormData";
-        api.url = "complainant/" + check_duplicate_complainant[0].id;
-      }
-
-      await ApiService[api.type](api.url, data_complainant_item)
-        .then(({ data }) => {
-          if (data.msg != "success") {
-            throw new Error("ERROR");
-          }
-
-          complainant_item.id = data.id;
-        })
-        .catch(({ response }) => {
-          console.log(response);
-          isLoading.value = false;
-        });
-    };
-    const onSaveComplaint = async () => {
-      let d1 = <any>null;
-      if (item.incident_date) {
-        if (item.incident_time) {
-          d1 = dayjs(item.incident_date)
-            .set("hour", item.incident_time.hours)
-            .set("minute", item.incident_time.minutes)
-            .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-        }
-      }
-
-      let data_item = {
-        complaint_type_id: item.complaint_topic.complaint_type_id,
-        complainant_id: complainant_item.id,
-        is_anonymous: item.is_anonymous,
-        complaint_title: item.complaint_title,
-        complaint_detail: item.complaint_detail,
-        complaint_channel_ids:
-          item.complaint_channel_all != null
-            ? item.complaint_channel_all.join(",")
-            : "",
-        incident_date: item.incident_date
-          ? dayjs(item.incident_date).format("YYYY-MM-DD")
-          : null,
-        incident_datetime: d1,
-        location_coordinates: item.location_coordinates,
-        incident_location: item.incident_location,
-        day_time: item.day_time.value,
-        complaint_channel_id: item.complaint_channel_id.id,
-        inspector_id: item.inspector_id,
-        bureau_id: item.bureau_id,
-        division_id: item.division_id,
-        agency_id: item.agency_id,
-        topic_type_id: item.complaint_topic.topic_type_id,
-        topic_category_id: item.complaint_topic.topic_category_id,
-        house_number: "",
-        building: "",
-        moo: "",
-        soi: "",
-        road: "",
-        postal_code: item.postal_code,
-        sub_district_id: item.sub_district_id,
-        district_id: item.district_id,
-        province_id: item.province_id,
-        evidence_url: item.evidence_url,
-        channel_history_text: item.channel_history_text,
-        state_id: 1,
-        // updated_by: item.firstname + " " + item.lastname,
-      };
-
-      await ApiService.postFormData("complaint/", data_item)
+      await ApiService.post("paper/", data_item)
         .then(({ data }) => {
           if (data.msg != "success") {
             throw new Error("ERROR");
@@ -418,42 +416,25 @@ export default defineComponent({
         })
         .catch(({ response }) => {
           console.log(response);
-          isLoading.value = false;
         });
     };
-    const onSaveAccused = async () => {
-      for (let i = 0; i < accused.length; i++) {
-        let data_accused_item = {
-          id: accused[i].id,
-          prefix_name_id: accused[i].prefix_name_id
-            ? accused[i].prefix_name_id.id
-            : null,
-          firstname: accused[i].firstname,
-          lastname: accused[i].lastname,
-
-          position_id: accused[i].position_id?.value,
-          section_id: accused[i].section_id?.value,
-
-          inspector_id: accused[i].inspector_id,
-          bureau_id: accused[i].bureau_id,
-          division_id: accused[i].division_id,
-          agency_id: accused[i].agency_id,
-          complaint_id: item.id,
-          type: 2,
-          detail: "",
+    const onSaveResearcher = async () => {
+      for (let i = 0; i < researcher.length; i++) {
+        let data_researcher_item = {
+          id: researcher[i].id,
+          prefix_name: researcher[i].prefix_name,
+          firstname: researcher[i].firstname,
+          surname: researcher[i].surname,
+          department_id: researcher[i].department_id?.id,
+          department_text: researcher[i].department_text,
+          phone_number: researcher[i].phone_number,
+          expertise: researcher[i].expertise,
+          researcher_type: researcher[i].researcher_type?.id,
+          percentage: researcher[i].percentage,
+          paper_id: item.id,
         };
 
-        let api = {
-          type: "post",
-          url: "accused/",
-        };
-
-        if (data_accused_item.id != null) {
-          api.type = "put";
-          api.url = "accused/" + data_accused_item.id;
-        }
-
-        await ApiService[api.type](api.url, data_accused_item)
+        await ApiService.post("researcher/", data_researcher_item)
           .then(({ data }) => {
             if (data.msg != "success") {
               throw new Error("ERROR");
@@ -461,52 +442,115 @@ export default defineComponent({
           })
           .catch(({ response }) => {
             console.log(response);
-            isLoading.value = false;
           });
       }
+    };
 
-      //   accused_old
-      for (let i = 0; i < accused_old.length; i++) {
-        let check = accused.find((x: any) => {
-          return x.id == accused_old[i].id;
-        });
+    const onSaveMethodList = async () => {
+      for (let i = 0; i < method_list.length; i++) {
+        let data_method_list_item = {
+          id: method_list[i].id,
+          start_date: method_list[i].start_date
+            ? dayjs(method_list[i].start_date).format("YYYY-MM-DD")
+            : undefined,
+          end_date: method_list[i].end_date
+            ? dayjs(method_list[i].end_date).format("YYYY-MM-DD")
+            : undefined,
+          detail: method_list[i].detail,
+          paper_id: item.id,
+        };
 
-        if (!check) {
-          await ApiService.delete("accused/" + accused_old[i].id)
-            .then(({ data }) => {
-              if (data.msg != "success") {
-                throw new Error("ERROR");
-              }
-            })
-            .catch(({ response }) => {
-              console.log(response);
-            });
-        }
+        await ApiService.post("method-list/", data_method_list_item)
+          .then(({ data }) => {
+            if (data.msg != "success") {
+              throw new Error("ERROR");
+            }
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
+      }
+    };
+
+    const onSaveBudget = async () => {
+      for (let i = 0; i < budget.length; i++) {
+        let data_budget_item = {
+          id: budget[i].id,
+          detail: budget[i].detail,
+          amount: budget[i].amount,
+          paper_id: item.id,
+        };
+
+        await ApiService.post("budget/", data_budget_item)
+          .then(({ data }) => {
+            if (data.msg != "success") {
+              throw new Error("ERROR");
+            }
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
+      }
+    };
+
+    const onSaveBudget2 = async () => {
+      for (let i = 0; i < budget2.length; i++) {
+        let data_budget_item = {
+          id: budget2[i].id,
+          detail: budget2[i].detail,
+          amount: budget2[i].amount,
+          paper_id: item.id,
+        };
+
+        await ApiService.post("budget2/", data_budget_item)
+          .then(({ data }) => {
+            if (data.msg != "success") {
+              throw new Error("ERROR");
+            }
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
+      }
+    };
+
+    const onSaveBudget3 = async () => {
+      for (let i = 0; i < budget3.length; i++) {
+        let data_budget_item = {
+          id: budget3[i].id,
+          detail: budget3[i].detail,
+          amount: budget3[i].amount,
+          paper_id: item.id,
+        };
+
+        await ApiService.post("budget3/", data_budget_item)
+          .then(({ data }) => {
+            if (data.msg != "success") {
+              throw new Error("ERROR");
+            }
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
       }
     };
 
     onMounted(async () => {
-      try {
-        mainModalObj.value = new Modal(mainModalRef.value, {});
-        mainModalObj.value.show();
-        mainModalRef.value.addEventListener("hidden.bs.modal", () =>
-          onClose({ reload: false })
-        );
-      } catch (error) {
-        console.error("Error:", error);
+      await fetchUser();
+      if (
+        user_item.prefix_name == "" ||
+        user_item.firstname == "" ||
+        user_item.surname == "" ||
+        user_item.email == "" ||
+        user_item.department_id == null
+      ) {
+        useToast("โปรดระบุข้อมูลส่วนตัวให้ครบถ้วน", "error");
+        router.push({ name: "paper" });
+        return;
       }
     });
 
-    onUnmounted(() => {
-      if (mainModalRef.value) {
-        mainModalRef.value.addEventListener("hidden.bs.modal", () =>
-          onClose({ reload: false })
-        );
-      }
-      mainModalObj.value.hide();
-
-      emit("close-modal");
-    });
+    onUnmounted(() => {});
 
     // Watch
 
@@ -514,15 +558,15 @@ export default defineComponent({
     return {
       isLoading,
       item,
-      complainant_item,
-      accused,
-      complaint_type,
+      budget,
+      budget2,
+      budget3,
+      method_list,
+      researcher,
       tab_index,
       // event
       onTabChange,
       onComplete,
-      onClose,
-      mainModalRef,
       r,
     };
   },
@@ -555,5 +599,19 @@ export default defineComponent({
 .stepTitle {
   color: #800001;
   font-weight: bold;
+}
+</style>
+
+<style>
+.vs__dropdown-toggle {
+  border: none;
+}
+
+.v-select {
+  padding: 0.4em 0.5em;
+}
+
+.dp__pointer {
+  border: none;
 }
 </style>

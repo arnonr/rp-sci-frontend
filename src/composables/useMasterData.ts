@@ -95,6 +95,22 @@ export default () => {
     return data.data;
   };
 
+  const fetchDepartments = async (params: any) => {
+    const { data } = await ApiService.query("department", {
+      params: params,
+    });
+
+    return data.data;
+  };
+
+  const fetchPaperTypes = async (params: any) => {
+    const { data } = await ApiService.query("paper-type", {
+      params: params,
+    });
+
+    return data.data;
+  };
+
   return {
     fetchPrefixName,
     fetchState,
@@ -109,5 +125,7 @@ export default () => {
     fetchSubdistrict,
     fetchTopicCategory,
     fetchTopicType,
+    fetchDepartments,
+    fetchPaperTypes,
   };
 };

@@ -66,6 +66,22 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/paper-add",
+        name: "paper-add",
+        component: () => import("@/views/paper/Add.vue"),
+        meta: {
+          pageTitle: "แบบฟอร์มเสนอโครงการวิจัย",
+        },
+      },
+      {
+        path: "/paper-edit/:id",
+        name: "paper-edit",
+        component: () => import("@/views/paper/Edit.vue"),
+        meta: {
+          pageTitle: "แบบฟอร์มเสนอโครงการวิจัย",
+        },
+      },
+      {
         path: "/new-complaint",
         name: "new-complaint",
         component: () => import("@/views/new-complaint/Index.vue"),

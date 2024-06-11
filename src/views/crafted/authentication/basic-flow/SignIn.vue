@@ -7,20 +7,22 @@
       id="kt_login_signin_form"
       @submit="onSubmitLogin"
       :validation-schema="login"
-      :initial-values="{ email: 'admin@demo.com', password: 'demo' }"
+      :initial-values="{ username: 'admin@demo.com', password: 'demo' }"
     >
       <!--begin::Heading-->
       <div class="text-center mb-10">
         <!--begin::Title-->
         <h1 class="text-gray-900 mb-3">
-          ระบบเสนอโครงการวิจัย <br>คณะวิทยาศาสตร์ประยุกต์
+          ระบบเสนอโครงการวิจัย <br />คณะวิทยาศาสตร์ประยุกต์
         </h1>
         <!--end::Title-->
       </div>
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
-        <label class="form-label fs-6 fw-bold text-gray-900">Email</label>
+        <label class="form-label fs-6 fw-bold text-gray-900"
+          >ICIT Account</label
+        >
         <!--end::Label-->
 
         <!--begin::Input-->
@@ -28,13 +30,13 @@
           tabindex="1"
           class="form-control form-control-lg form-control-solid"
           type="text"
-          name="email"
+          name="username"
           autocomplete="off"
         />
         <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
-            <ErrorMessage name="email" />
+            <ErrorMessage name="username" />
           </div>
         </div>
       </div>
@@ -51,9 +53,13 @@
           <!--end::Label-->
 
           <!--begin::Link-->
-          <router-link to="/password-reset" class="link-primary fs-6 fw-bold">
+          <a
+            href="https://account.kmutnb.ac.th/web/recovery/password"
+            target="_blank"
+            class="link-primary fs-6 fw-bold"
+          >
             ลืมรหัสผ่าน ?
-          </router-link>
+          </a>
           <!--end::Link-->
         </div>
         <!--end::Wrapper-->
@@ -116,8 +122,6 @@ import { useAuthStore, type User } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import * as Yup from "yup";
-// import Api Service
-import ApiService from "@/core/services/ApiService";
 
 export default defineComponent({
   name: "sign-in",
@@ -134,7 +138,7 @@ export default defineComponent({
 
     //Create form validation object
     const login = Yup.object().shape({
-      email: Yup.string().email().required().label("Email"),
+      username: Yup.string().required().label("ICIT Account"),
       password: Yup.string().min(4).required().label("Password"),
     });
 
@@ -167,7 +171,7 @@ export default defineComponent({
           },
         }).then(() => {
           // Go to page after successfully login
-          router.push({ name: "dashboard" });
+          router.push({ name: "paper" });
         });
       } else {
         Swal.fire({

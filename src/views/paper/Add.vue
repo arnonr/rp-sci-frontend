@@ -615,7 +615,7 @@ export default defineComponent({
   border: none;
 }
 
-.fr-wrapper > div:last-child {
+.fr-wrapper > div:first-child {
   display: none;
 }
 </style>

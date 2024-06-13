@@ -614,4 +614,8 @@ export default defineComponent({
 .dp__pointer {
   border: none;
 }
+
+.fr-wrapper > div:last-child {
+  display: none;
+}
 </style>

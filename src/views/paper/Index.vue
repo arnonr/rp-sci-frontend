@@ -130,7 +130,7 @@ export default defineComponent({
     const isLoading = ref<any>(false);
     const router = useRouter();
     const sortKey = ref<any>("");
-    const sortOrder = ref<any>(1);
+    const sortOrder = ref<any>(-1);
 
     // Variable
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");

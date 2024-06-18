@@ -9,7 +9,7 @@
 
           <div class="col-md-12">
             <span class="fw-bold">ประเภทงานวิจัย : </span>
-            <span class="fst-italic">{{ item.paper_type_id.name }}</span>
+            <span class="fst-italic">{{ item.paper_type_id?.name }}</span>
             <div class="separator separator-dotted my-2"></div>
           </div>
 

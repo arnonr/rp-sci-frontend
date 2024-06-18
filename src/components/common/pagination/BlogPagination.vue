@@ -1,6 +1,15 @@
 <template>
   <div class="d-flex justify-content-between">
-    <div class="text-muted">20 รายการ/หน้า</div>
+    <div class="text-muted">
+      <input
+        class="form-control d-inline"
+        type="text"
+        style="max-width: 50px"
+        v-model="perPage1"
+        @input="onChangePerPageHandler"
+      />
+      <span class="ms-2">รายการ/หน้า</span>
+    </div>
     <nav aria-label="..." class="py-5">
       <ul class="pagination">
         <li :class="`page-item ${prevBtnClass}`">
@@ -35,11 +44,20 @@ export default defineComponent({
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
-const props = defineProps(["currentPage", "totalPage", "totalItems"]);
-const emit = defineEmits(["update:currentPage"]);
+import { debounce } from "lodash";
+
+const props = defineProps([
+  "currentPage",
+  "totalPage",
+  "totalItems",
+  "perPage",
+]);
+const emit = defineEmits(["update:currentPage", "update:perPage"]);
 const prevBtnClass = ref("");
 const nextBtnClass = ref("");
 const numPage = ref([1, 2, 3]);
+
+const perPage1 = ref(props.perPage);
 
 // Watch
 watch(
@@ -89,6 +107,14 @@ const onChangePage = (type: any) => {
   if (typeof type === "number") {
     emit("update:currentPage", type);
   }
+};
+
+const onChangePerPage = debounce(() => {
+  emit("update:perPage", perPage1.value);
+}, 1000);
+
+const onChangePerPageHandler = () => {
+  onChangePerPage();
 };
 
 // Mounted

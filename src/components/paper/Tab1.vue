@@ -810,29 +810,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    budget: {
-      type: Array as () => any[],
+    errors: {
+      type: Object,
       required: true,
-    },
-    budget2: {
-      type: Array as () => any[],
-      required: true,
-    },
-    budget3: {
-      type: Array as () => any[],
-      required: true,
-    },
-    researcher: {
-      type: Array as () => any[],
-      required: true,
-    },
-    method_list: {
-      type: Array as () => any[],
-      required: true,
-    },
-    r: {
-      type: String,
-    },
+    },F
   },
   components: {
     vSelect,
@@ -1289,40 +1270,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-@media only screen and (max-width: 768px) {
-  .card > .card-body {
-    padding: 0px;
-  }
-}
-.vs__dropdown-toggle {
-  border: none;
-}
-
-.v-select {
-  padding: 0.4em 0.5em;
-}
-
-.dp__main {
-  padding: 0.35em 0em;
-}
-
-.dp__input {
-  border: none !important;
-}
-
-.form-control {
-  border-color: #800001;
-  border-width: 0.1em;
-}
-
-.form-check-input:not(:checked) {
-  background-color: #fff;
-}
-
-.form-check-input:checked {
-  background-color: #1b84ff !important;
-  border-color: #1b84ff !important;
-}
-</style>

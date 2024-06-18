@@ -4,15 +4,20 @@
       class="table table-bordered table-striped bg-sky"
       style="width: 100%"
     >
-      <thead class="bg-color-police">
+      <thead class="bg-yellow">
         <tr>
-          <th class="text-center text-white">วันที่เสนอ</th>
-          <th class="text-center text-white">รหัส</th>
-          <th class="text-center text-white">ชื่อโครงการ (TH)</th>
-          <th class="text-center text-white">หน่วยงาน</th>
-          <th class="text-center text-white">ประเภททุนวิจัย</th>
-          <th class="text-center text-white">สถานะ</th>
-          <th class="text-center text-white">จัดการข้อมูล</th>
+          <th
+            class="text-center text-white cursor-pointer"
+            v-for="(hc, idx) in headerColumn"
+            :key="idx"
+            @click="hc.sort == true ? handleSort(hc.column_name) : undefined"
+          >
+            <span>{{ hc.title }}</span>
+            <i
+              :class="getSortIcon(hc.column_name)"
+              class="sort-icon ms-2 text-grey"
+            ></i>
+          </th>
         </tr>
       </thead>
       <tbody v-if="items.length != 0">
@@ -91,10 +96,12 @@
     <div class="col-xxl-12">
       <div class="tp-pagination mt-30">
         <BlogPagination
+          :perPage="paginationData.perPage"
           :totalItems="paginationData.totalItems"
           :totalPage="paginationData.totalPage"
           :currentPage="paginationData.currentPage"
           @update:currentPage="updateCurrentPage"
+          @update:perPage="updatePerPage"
         />
       </div>
     </div>
@@ -129,12 +136,31 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    sortKey: {
+      type: String,
+      required: true,
+    },
+    sortOrder: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props, { emit }) {
-    const { items } = toRefs(props);
+    const { items, sortKey, sortOrder } = toRefs(props);
     const { paginationData } = toRefs(props);
     const internalCurrentPage = ref(paginationData.value.currentPage);
+    const internalPerPage = ref(paginationData.value.perPage);
     let { statuses } = useStatusData();
+
+    const headerColumn = [
+      { column_name: "created_at", title: "วันที่เสนอ", sort: true },
+      { column_name: "rp_no", title: "รหัส", sort: true },
+      { column_name: "title_th", title: "ชื่อโครงการ (TH)", sort: true },
+      { column_name: "department_id", title: "หน่วยงาน", sort: true },
+      { column_name: "paper_type_id", title: "ประเภททุนวิจัย", sort: true },
+      { column_name: "status_id", title: "สถานะ", sort: true },
+      { column_name: "manage", title: "จัดการข้อมูล", sort: false },
+    ];
 
     // fetch
 
@@ -144,6 +170,10 @@ export default defineComponent({
 
     const handleEdit = (item: any) => {
       emit("edit", item);
+    };
+
+    const handleSort = (key: any) => {
+      emit("sort", key);
     };
 
     const convertDate = (date: any) => {
@@ -163,6 +193,16 @@ export default defineComponent({
       emit("update:currentPage", newPage);
     };
 
+    const updatePerPage = (newPerPage: any) => {
+      internalPerPage.value = newPerPage;
+      emit("update:perPage", newPerPage);
+    };
+
+    const getSortIcon = (key: any) => {
+      if (sortKey.value !== key) return "";
+      return sortOrder.value === 1 ? "fa fa-sort-desc" : "fa fa-sort-asc";
+    };
+
     return {
       items,
       handleDetail,
@@ -170,13 +210,22 @@ export default defineComponent({
       convertDate,
       convertStatus,
       updateCurrentPage,
+      updatePerPage,
+      getSortIcon,
+      handleSort,
+      headerColumn,
     };
   },
 });
 </script>
 
 <style scoped>
-.bg-sky {
-  background-color: #d9f4fe;
+th {
+  vertical-align: middle;
+}
+.sort-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

@@ -32,51 +32,26 @@
                   :clearable="true"
                 ></v-select>
               </div>
-
-              <div class="col-12 col-md-8 my-2">
+              <div class="col-12 col-md-2 my-2">
+                <label for="">รหัส</label>
+                <input
+                  type="text"
+                  id="txt-search-complain-code"
+                  name="txt-search-complain-code"
+                  class="form-control"
+                  v-model="search.rp_no"
+                />
+              </div>
+              <div class="col-12 col-md-6 my-2">
                 <label for="">ชื่อเรื่อง</label>
                 <input
                   type="text"
                   id="txt-search-complain-title"
                   name="txt-search-complain-title"
                   class="form-control"
-                  v-model="search.complaint_title"
+                  v-model="search.title_th"
                 />
               </div>
-              <div class="col-12 col-md-4 my-2">
-                <label for="">เลข</label>
-                <input
-                  type="text"
-                  id="txt-search-complain-code"
-                  name="txt-search-complain-code"
-                  class="form-control"
-                  v-model="search.jcoms_no"
-                />
-              </div>
-              <div class="col-12 col-md-4 my-2">
-                <label for="">ชื่อผู้เสนอ</label>
-                <input
-                  type="text"
-                  id="txt-search-complain-fullname"
-                  name="txt-search-complain-fullname"
-                  class="form-control"
-                  v-model="search.complainant_fullname"
-                />
-              </div>
-
-              <div class="col-12 col-md-4 my-2">
-              <label for="">สถานะเรื่องร้องเรียน</label>
-              <v-select
-                id="slt-search-state-id"
-                name="slt-search-state-id"
-                label="name_th"
-                placeholder="สถานะเรื่องร้องเรียน"
-                :options="selectOptions.paper_statuses"
-                v-model="search.status_id"
-                class="form-control"
-                :clearable="true"
-              ></v-select>
-            </div>
             </div>
             <div class="pt-5">
               <button class="btn btn-success fw-bold" @click="onSearch()">
@@ -193,7 +168,7 @@ export default defineComponent({
 
 <style scoped>
 .form-control {
-  border-color: #800001;
+  border-color: #ffc600;
   border-width: 0.1em;
 }
 </style>

@@ -1,110 +1,7 @@
 <template>
-  <tab-content :title="`สาระสำคัญของโครงการ`" :before-change="onTab1Validate">
+  <tab-content :title="`ลำดับที่ 2`" :before-change="onTab2Validate">
     <div class="row">
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="complaint_title" class="required form-label"
-          >ประเภทงานวิจัย</label
-        >
-        <v-select
-          name="paper_type_id"
-          label="name"
-          placeholder="ประเภทงานวิจัย"
-          :options="selectOptions.paper_types"
-          class="form-control"
-          :clearable="false"
-          v-model="item.paper_type_id"
-        >
-        </v-select>
-        <div class="d-block mt-1" v-if="errors.paper_type_id.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.paper_type_id.text
-          }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="complaint_title" class="required form-label"
-          >ชื่อโครงการ ภาษาไทย</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          :placeholder="`ชื่อโครงการ ภาษาไทย`"
-          :aria-label="`ชื่อโครงการ ภาษาไทย`"
-          v-model="item.title_th"
-        />
-        <div class="d-block mt-1" v-if="errors.title_th.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.title_th.text
-          }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="complaint_title" class="required form-label"
-          >ชื่อโครงการ ภาษาอังกฤษ</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          :placeholder="`ชื่อโครงการ ภาษาอังกฤษ`"
-          :aria-label="`ชื่อโครงการ ภาษาอังกฤษ`"
-          v-model="item.title_en"
-        />
-        <div class="d-block mt-1" v-if="errors.title_en.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.title_en.text
-          }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >บทคัดย่อ (Abstract)</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.abstract"
-          v-model="item.abstract"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.abstract.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.abstract.text
-          }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="complaint_detail" class="form-label">Keyword</label>
-        <vue3-tags-input
-          :tags="tags"
-          placeholder=""
-          @on-tags-changed="handleChangeTag"
-        />
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="department_id" class="required form-label">ภาควิชา</label>
-        <v-select
-          name="department_id"
-          label="name"
-          placeholder="ภาควิชา"
-          :options="selectOptions.departments"
-          class="form-control"
-          :clearable="false"
-          v-model="item.department_id"
-        >
-        </v-select>
-        <div class="d-block mt-1" v-if="errors.department_id.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.department_id.text
-          }}</span>
-        </div>
-      </div>
-
       <div class="col-12 mb-7">
-        <hr class="dotted" />
-
         <h6>คณะผู้วิจัย</h6>
 
         <div class="p-3 border border-dark-subtle rounded">
@@ -120,44 +17,20 @@
               <h6>ลำดับที่ {{ idx + 1 }}</h6>
             </div>
             <div class="mb-3 col-12 col-lg-2">
-              <label for="budget_detail" class="form-label">คำนำหน้า</label>
+              <label for="prefix_name" class="form-label">คำนำหน้า</label>
               <input
                 type="text"
                 class="form-control"
                 v-model="rs.prefix_name"
               />
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.prefix_name == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.prefix_name.text
-                }}</span>
-              </div>
             </div>
             <div class="mb-3 col-12 col-lg-5">
               <label for="firstname" class="form-label">ชื่อ</label>
               <input type="text" class="form-control" v-model="rs.firstname" />
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.firstname.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.firstname.text
-                }}</span>
-              </div>
             </div>
             <div class="mb-3 col-12 col-lg-5">
-              <label for="firstname" class="form-label">นามสกุล</label>
+              <label for="surname" class="form-label">นามสกุล</label>
               <input type="text" class="form-control" v-model="rs.surname" />
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.surname.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.surname.text
-                }}</span>
-              </div>
             </div>
             <div class="mb-7 col-12 col-lg-6">
               <label for="department_id" class="form-label">หน่วยงาน</label>
@@ -171,14 +44,6 @@
                 v-model="rs.department_id"
               >
               </v-select>
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.department_id.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.department_id.text
-                }}</span>
-              </div>
             </div>
             <div class="mb-7 col-12 col-lg-6">
               <label for="department_text" class="form-label"
@@ -199,10 +64,12 @@
               </div>
             </div>
             <div class="mb-7 col-12 col-lg-6">
-              <label for="phone_number" class="form-label"
-                >เบอร์โทรศัพท์</label
-              >
-              <input type="text" class="form-control" v-model="rs.phone_number" />
+              <label for="phone_number" class="form-label">เบอร์โทรศัพท์</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="rs.phone_number"
+              />
               <div
                 class="d-block mt-1"
                 v-if="researcher_errors.phone_number.error == 1"
@@ -213,7 +80,7 @@
               </div>
             </div>
             <div class="mb-7 col-12 col-lg-6">
-              <label for="department_text" class="form-label"
+              <label for="expertise" class="form-label"
                 >ความชำนาญ/ความสนใจพิเศษ</label
               >
               <input type="text" class="form-control" v-model="rs.expertise" />
@@ -227,7 +94,7 @@
               </div>
             </div>
             <div class="mb-7 col-12 col-lg-6">
-              <label for="department_id" class="required form-label"
+              <label for="research_type" class="required form-label"
                 >ประเภท</label
               >
               <v-select
@@ -250,7 +117,7 @@
               </div>
             </div>
             <div class="mb-7 col-12 col-lg-4">
-              <label for="department_text" class="form-label">สัดส่วน (%)</label>
+              <label for="percentage" class="form-label">สัดส่วน (%)</label>
               <input type="text" class="form-control" v-model="rs.percentage" />
               <div
                 class="d-block mt-1"
@@ -279,103 +146,6 @@
           <a @click="onIncreaseResearcher" class="cursor-pointer"
             ><span>+ เพิ่ม</span></a
           >
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.history"
-          v-model="item.history"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.history.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.history.text
-          }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >วัตถุประสงค์ของโครงการวิจัย</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.objective"
-          v-model="item.objective"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.objective.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.objective.text
-          }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >ขอบเขตของการวิจัย</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.scope"
-          v-model="item.scope"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.scope.error == 1">
-          <span role="alert" class="text-danger">{{ errors.scope.text }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >ผลงานวิจัยที่เกี่ยวข้อง (Review Literature)
-          ระบุความเกี่ยวเนื่องสัมพันธ์หรือความแตกต่างของโครงการวิจัยเรื่องนี้กับโครงการวิจัยอื่นทั้งในประเทศและต่างประเทศที่ได้มีการวิจัยไว้แล้ว
-          รวมถึงรายละเอียดผลการวิจัยที่เกี่ยวข้อง
-          ต้องเขียนแสดงรายละเอียดจากผลการวิจัยเรื่องนั้นๆ
-          ไม่ใช่การเขียนเอกสารอ้างอิงหรือบรรณานุกรม</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.review_literature"
-          v-model="item.review_literature"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.review_literature.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.review_literature.text
-          }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >ระเบียบวิธีวิจัย ให้อธิบายขั้นตอนในการดำเนินการทดลอง หรือทดสอบ
-          โดยอธิบาย วิธีวิเคราะห์ข้อมูล อย่างละเอียด</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.method"
-          v-model="item.method"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.method.error == 1">
-          <span role="alert" class="text-danger">{{ errors.method.text }}</span>
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >ประโยชน์ที่คาดว่าจะได้รับ</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.benefit"
-          v-model="item.benefit"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.benefit.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.benefit.text
-          }}</span>
         </div>
       </div>
 
@@ -433,7 +203,7 @@
             </div>
 
             <div class="mb-3 col-12 col-lg-6">
-              <label for="budget_detail" class="form-label"
+              <label for="method_end_date" class="form-label"
                 >วันที่สิ้นสุด</label
               >
               <VueDatePicker
@@ -461,7 +231,7 @@
             </div>
 
             <div class="mb-3 col-12 col-lg-10">
-              <label for="firstname" class="form-label">รายละเอียด</label>
+              <label for="method_detail" class="form-label">รายละเอียด</label>
               <input type="text" class="form-control" v-model="ml.detail" />
               <div
                 class="d-block mt-1"
@@ -479,7 +249,7 @@
                 @click="onDecreaseMethodList(idx)"
               >
                 <i class="fa fa-close"></i>
-                <span>ลบ {{ idx + 1 }}</span>
+                <span>ลบ </span>
               </button>
             </div>
             <hr />
@@ -490,22 +260,6 @@
           <a @click="onIncreaseMethodList" class="cursor-pointer"
             ><span>+ เพิ่ม</span></a
           >
-        </div>
-      </div>
-
-      <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
-          >สถานที่ทำการทดลอง และ/หรือเก็บข้อมูล</label
-        >
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.location"
-          v-model="item.location"
-        ></froala>
-        <div class="d-block mt-1" v-if="errors.location.error == 1">
-          <span role="alert" class="text-danger">{{
-            errors.location.text
-          }}</span>
         </div>
       </div>
 
@@ -569,7 +323,7 @@
                 @click="onDecreaseBudget(1, idx)"
               >
                 <i class="fa fa-close"></i>
-                <span>ลบ {{ idx + 1 }}</span>
+                <span>ลบ</span>
               </button>
             </div>
             <hr />
@@ -635,7 +389,7 @@
                 @click="onDecreaseBudget(2, idx)"
               >
                 <i class="fa fa-close"></i>
-                <span>ลบ {{ idx + 1 }}</span>
+                <span>ลบ</span>
               </button>
             </div>
             <hr />
@@ -701,7 +455,7 @@
                 @click="onDecreaseBudget(3, idx)"
               >
                 <i class="fa fa-close"></i>
-                <span>ลบ {{ idx + 1 }}</span>
+                <span>ลบ</span>
               </button>
             </div>
             <hr />
@@ -716,7 +470,7 @@
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
-        <label for="abstract" class="required form-label"
+        <label for="references" class="required form-label"
           >รายการเอกสารอ้างอิงหรือบรรณานุกรม</label
         >
 
@@ -758,7 +512,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch, reactive, toRefs } from "vue";
+import { defineComponent, ref, onMounted, reactive, toRefs } from "vue";
 import ApiService from "@/core/services/ApiService";
 // Import Vue-select
 import vSelect from "vue-select";
@@ -777,10 +531,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 // Import FormWizard
 import { TabContent } from "vue3-form-wizard";
-// Import Yup Validate
-import * as Yup from "yup";
-// Use Toast Composables
-import useToast from "@/composables/useToast";
 // Uppy
 import { Dashboard } from "@uppy/vue";
 import Uppy from "@uppy/core";
@@ -790,8 +540,6 @@ import XHRUpload from "@uppy/xhr-upload";
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import "@uppy/webcam/dist/style.css";
-// Vue3 Tags
-import Vue3TagsInput from "vue3-tags-input";
 // import "@wiris/mathtype-froala3/wiris.js"
 
 // Use Composables
@@ -800,7 +548,7 @@ import useMasterData from "@/composables/useMasterData";
 import useFroalaConfigData from "@/composables/useFroalaConfigData";
 
 export default defineComponent({
-  name: "complaint-form-tab2",
+  name: "paper-form-tab2",
   props: {
     item: {
       type: Object,
@@ -829,6 +577,30 @@ export default defineComponent({
     r: {
       type: String,
     },
+    errors: {
+      type: Object,
+      required: true,
+    },
+    method_list_errors: {
+      type: Object,
+      required: true,
+    },
+    researcher_errors: {
+      type: Object,
+      required: true,
+    },
+    budget_errors: {
+      type: Object,
+      required: true,
+    },
+    budget2_errors: {
+      type: Object,
+      required: true,
+    },
+    budget3_errors: {
+      type: Object,
+      required: true,
+    },
   },
   components: {
     vSelect,
@@ -836,7 +608,6 @@ export default defineComponent({
     dayjs,
     Dashboard,
     TabContent,
-    Vue3TagsInput,
   },
   setup(props, { emit }) {
     // Variable
@@ -850,31 +621,11 @@ export default defineComponent({
       return `${day} ${month} ${year}`;
     };
 
-    const tags = ref<string[]>([]);
-
     let froalaConfig: any = {
-      abstract: useFroalaConfigData().froala_config,
-      history: useFroalaConfigData().froala_config,
-      objective: useFroalaConfigData().froala_config,
-      review_literature: useFroalaConfigData().froala_config,
-      method: useFroalaConfigData().froala_config,
-      benefit: useFroalaConfigData().froala_config,
-      location: useFroalaConfigData().froala_config,
       references: useFroalaConfigData().froala_config,
-      scope: useFroalaConfigData().froala_config,
     };
 
-    let textEditor = [
-      "abstract",
-      "history",
-      "objective",
-      "review_literature",
-      "method",
-      "benefit",
-      "location",
-      "references",
-      "scope",
-    ];
+    let textEditor = ["references"];
 
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
@@ -951,187 +702,12 @@ export default defineComponent({
 
     const selectOptions = ref({
       departments: <any>[],
-      paper_types: <any>[],
       researcher_types: useBasicData().researcher_types,
     });
 
-    // Validate Schema
-    const validationItemSchema = Yup.object().shape({
-      title_th: Yup.string()
-        .required("${path} จำเป็นต้องระบุ")
-        .label("ชื่อโครงการ ภาษาไทย"),
-      title_en: Yup.string()
-        .required("${path} จำเป็นต้องระบุ")
-        .label("ชื่อโครงการ ภาษาอังกฤษ"),
-      abstarct: Yup.string().nullable().label(""),
-      keyword: Yup.string().nullable().label(""),
-      history: Yup.string().nullable().label(""),
-      objective: Yup.string().nullable().label(""),
-
-      //     rp_no: "",
-      //   user_id: null,
-      //   title_th: "",
-      //   title_en: "",
-      //   abstract: "",
-      //   keyword: "",
-      //   department_id: null,
-      //   paper_type_id: null,
-      //   history: "",
-      //   objective: "",
-      //   scope: "",
-      //   review_literature: "",
-      //   method: "",
-      //   benefit: "",
-      //   location: "",
-      //   references: "",
-      //   status_id: null,
-      //   sended_at: null,
-      //   sended_user_id: null,
-
-      //   complaint_title: Yup.string()
-      //     .required("${path} จำเป็นต้องระบุ")
-      //     .label("หัวข้อเรื่อง"),
-      //   house_number: Yup.string().nullable().label("บ้านเลขที่"),
-      //   building: Yup.string().nullable().label("หมู่บ้าน"),
-      //   moo: Yup.string().nullable().label("หมู่ที่"),
-      //   soi: Yup.string().nullable().label("ซอย"),
-      //   road: Yup.string().nullable().label("ถนน"),
-      //   address_all: Yup.object()
-      //     .required("${path} จำเป็นต้องระบุ")
-      //     .label("จังหวัด/อำเภอ/ตำบล"),
-      //   incident_location: Yup.string()
-      //     .required("${path} จำเป็นต้องระบุ")
-      //     .label("สถานที่เกิดเหตุ"),
-      //   incident_date: Yup.date()
-      //     .required("${path} จำเป็นต้องระบุ")
-      //     .label("วันที่เกิดเหตุ"),
-      //   incident_time: Yup.object().nullable().label("เวลาเกิดเหตุ"),
-      //   day_time: Yup.object()
-      //     .required("${path} จำเป็นต้องระบุ")
-      //     .label("ห้วงเวลาเกิดเหตุ"),
-      //   location_coordinates: Yup.string().nullable().label("coordinates"),
-      //   complaint_detail: Yup.string()
-      //     .required("${path} จำเป็นต้องระบุ")
-      //     .label("บรรยายพฤติกรรมการกระทำความผิด"),
-      //   //   complaint_channel_id: Yup.object().nullable(),
-      //   complaint_topic: Yup.object()
-      //     .required("${path} จำเป็นต้องระบุ")
-      //     .label("ประเภทเรื่อง"),
-      //   complaint_channel_all: Yup.array()
-      //     .nullable()
-      //     .label("เคยร้องเรียนเรื่องนี้ผ่านช่องทางใด"),
-    });
-
-    const validationBudgetSchema = Yup.object().shape({
-      detail: Yup.object().nullable().label("รายละเอียด"),
-      amount: Yup.number().nullable().label("จำนวนเงิน"),
-    });
-
-    // errors
-    const errors_default = {
-      title_th: { error: 0, text: "" },
-      title_en: { error: 0, text: "" },
-      abstarct: { error: 0, text: "" },
-      paper_type_id: { error: 0, text: "" },
-      abstract: { error: 0, text: "" },
-      references: { error: 0, text: "" },
-      location: { error: 0, text: "" },
-      benefit: { error: 0, text: "" },
-      method: { error: 0, text: "" },
-      review_literature: { error: 0, text: "" },
-      objective: { error: 0, text: "" },
-      history: { error: 0, text: "" },
-      scope: { error: 0, text: "" },
-      department_id: { error: 0, text: "" },
-    };
-    const errors = reactive<any>({
-      ...errors_default,
-    });
-
-    // budget_errors
-    const budget_errors_default = {
-      detail: { error: 0, text: "" },
-      amount: { error: 0, text: "" },
-    };
-    const budget_errors = reactive<any>({
-      ...budget_errors_default,
-    });
-
-    const researcher_errors_default = {
-      prefix_name: { error: 0, text: "" },
-      firstname: { error: 0, text: "" },
-      surname: { error: 0, text: "" },
-      department_id: { error: 0, text: "" },
-      department_text: { error: 0, text: "" },
-      phone_number: { error: 0, text: "" },
-      expertise: { error: 0, text: "" },
-      researcher_type: { error: 0, text: "" },
-      percentage: { error: 0, text: "" },
-    };
-    const researcher_errors = reactive<any>({
-      ...researcher_errors_default,
-    });
-
-    const method_list_errors_default = {
-      start_date: { error: 0, text: "" },
-      end_date: { error: 0, text: "" },
-      detail: { error: 0, text: "" },
-    };
-    const method_list_errors = reactive<any>({
-      ...method_list_errors_default,
-    });
-
-    //Fetch
-
     // Event
-    const onTab1Validate = async () => {
-      Object.assign(errors, {
-        ...errors_default,
-      });
-
-      Object.assign(budget_errors, {
-        ...budget_errors_default,
-      });
-
-      //   try {
-      //     await validationItemSchema.validate(item.value, {
-      //       abortEarly: false,
-      //     });
-      //   } catch (err: any) {
-      //     err.inner.forEach((error: any) => {
-      //       const fieldName = error.path;
-      //       const errorMessage = error.message;
-      //       errors[fieldName].error = 1;
-      //       errors[fieldName].text = errorMessage;
-      //     });
-      //     console.log(errors);
-      //     useToast("ระบุข้อมูลไม่ครบถ้วน", "error");
-      //     return false;
-      //   }
-
-      //   try {
-      //     if (budget.value.length > 0) {
-      //       await validationBudgetSchema.validate(budget[0], {
-      //         abortEarly: false,
-      //       });
-      //     }
-      //   } catch (err: any) {
-      //     err.inner.forEach((error: any) => {
-      //       const fieldName = error.path;
-      //       const errorMessage = error.message;
-      //       budget_errors[fieldName].error = 1;
-      //       budget_errors[fieldName].text = errorMessage;
-      //     });
-      //     useToast("ข้อมูลไม่ครบถ้วน", "error");
-      //     return false;
-      //   }
-
+    const onTab2Validate = async () => {
       return true;
-    };
-
-    const handleChangeTag = (tags: any) => {
-      tags.value = tags;
-      item.value.keyword = tags.value.join(",");
     };
 
     // Mounted
@@ -1140,13 +716,6 @@ export default defineComponent({
         is_active: 1,
         perPage: 500,
       });
-
-      selectOptions.value.paper_types = await useMasterData().fetchPaperTypes({
-        is_active: 1,
-        perPage: 500,
-      });
-
-      tags.value = [];
     });
 
     const onIncreaseBudget = (type: any) => {
@@ -1224,14 +793,8 @@ export default defineComponent({
       froalaConfig,
       format,
       selectOptions,
-      tags,
       uppy,
-      handleChangeTag,
-      onTab1Validate,
-      errors,
-      budget_errors,
-      researcher_errors,
-      method_list_errors,
+      onTab2Validate,
       onIncreaseBudget,
       onDecreaseBudget,
       onIncreaseResearcher,
@@ -1242,40 +805,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-@media only screen and (max-width: 768px) {
-  .card > .card-body {
-    padding: 0px;
-  }
-}
-.vs__dropdown-toggle {
-  border: none;
-}
-
-.v-select {
-  padding: 0.4em 0.5em;
-}
-
-.dp__main {
-  padding: 0.35em 0em;
-}
-
-.dp__input {
-  border: none !important;
-}
-
-.form-control {
-  border-color: #800001;
-  border-width: 0.1em;
-}
-
-.form-check-input:not(:checked) {
-  background-color: #fff;
-}
-
-.form-check-input:checked {
-  background-color: #1b84ff !important;
-  border-color: #1b84ff !important;
-}
-</style>

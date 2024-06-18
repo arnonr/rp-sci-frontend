@@ -71,4 +71,62 @@ export default defineComponent({
 #app {
   display: contents;
 }
+
+@media only screen and (max-width: 768px) {
+  .card > .card-body {
+    padding: 0px;
+  }
+}
+
+.bg-sky {
+  background-color: #d9f4fe;
+}
+
+.vs__dropdown-toggle {
+  border: none;
+}
+
+.v-select {
+  padding: 0.4em 0.5em;
+}
+
+.dp__main {
+  padding: 0.35em 0em;
+}
+
+.dp__input {
+  border: none !important;
+}
+
+.dp__pointer {
+  border: none;
+}
+
+.bg-yellow {
+  background-color: #ffc600;
+}
+
+.color-primary {
+  color: #ffc600;
+}
+
+.wizard-icon-container {
+  background-color: #ffc600 !important;
+}
+
+.stepTitle {
+  color: #ffc600;
+  font-weight: bold;
+}
+
+.form-check-label {
+  color: #444;
+}
+.pac-container {
+  z-index: 9999 !important;
+}
+
+.modal-content {
+  background-color: #d9f4fe;
+}
 </style>

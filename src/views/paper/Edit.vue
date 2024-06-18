@@ -110,8 +110,8 @@ dayjs.extend(buddhistEra);
 dayjs.extend(customParseFormat);
 
 // Import Component
-import Tab1 from "@/components/paper/Tab1.vue";
-import Tab2 from "@/components/paper/Tab2.vue";
+import Tab1 from "@/components/paper/form/Tab1.vue";
+import Tab2 from "@/components/paper/form/Tab2.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
 
 // Import Yup Validate

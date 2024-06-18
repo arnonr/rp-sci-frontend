@@ -1,6 +1,6 @@
 <template>
   <tab-content :title="'สรุปข้อมูล'">
-    <div class="row" v-if="tab_index == 1">
+    <div class="row" v-if="tab_index == 2">
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12 mb-5">
@@ -48,9 +48,52 @@
             <div class="separator separator-dotted my-2"></div>
           </div>
 
-          <div>
-            <hr class="my-6" />
-            <h6>คณะผู้วิจัย</h6>
+          <div class="col-md-12">
+            <span class="fw-bold"
+              >ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ :
+            </span>
+            <div class="fst-italic" v-html="item.history"></div>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">วัตถุประสงค์ของโครงการวิจัย : </span>
+            <div class="fst-italic" v-html="item.objective"></div>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">ขอบเขตของการวิจัย : </span>
+            <div class="fst-italic" v-html="item.scope"></div>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">ผลงานวิจัยที่เกี่ยวข้อง : </span>
+            <div class="fst-italic" v-html="item.review_literature"></div>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">ระเบียบวิธีวิจัย : </span>
+            <div class="fst-italic" v-html="item.method"></div>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">ประโยชน์ที่คาดว่าจะได้รับ : </span>
+            <div class="fst-italic" v-html="item.benefit"></div>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">สถานที่ทำการทดลอง และ/หรือเก็บข้อมูล : </span>
+            <div class="fst-italic" v-html="item.location"></div>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="pt-6">
+            <h6 class="py-5 px-5 bg-warning rounded">คณะผู้วิจัย</h6>
             <div v-for="(rc, idx) in researcher" :key="idx" class="row">
               <div class="col-md-6 mt-10">
                 <span class="fw-bold">คนที่ {{ idx + 1 }} : </span>
@@ -90,47 +133,10 @@
             <hr class="my-6" />
           </div>
 
-          <div class="col-md-12">
-            <span class="fw-bold"
-              >ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ :
-            </span>
-            <div class="fst-italic" v-html="item.history"></div>
-            <div class="separator separator-dotted my-2"></div>
-          </div>
-
-          <div class="col-md-12">
-            <span class="fw-bold">วัตถุประสงค์ของโครงการวิจัย : </span>
-            <div class="fst-italic" v-html="item.objective"></div>
-            <div class="separator separator-dotted my-2"></div>
-          </div>
-
-          <div class="col-md-12">
-            <span class="fw-bold">ขอบเขตของการวิจัย : </span>
-            <div class="fst-italic" v-html="item.scope"></div>
-            <div class="separator separator-dotted my-2"></div>
-          </div>
-
-          <div class="col-md-12">
-            <span class="fw-bold">ผลงานวิจัยที่เกี่ยวข้อง : </span>
-            <div class="fst-italic" v-html="item.review_literature"></div>
-            <div class="separator separator-dotted my-2"></div>
-          </div>
-
-          <div class="col-md-12">
-            <span class="fw-bold">ระเบียบวิธีวิจัย : </span>
-            <div class="fst-italic" v-html="item.method"></div>
-            <div class="separator separator-dotted my-2"></div>
-          </div>
-
-          <div class="col-md-12">
-            <span class="fw-bold">ประโยชน์ที่คาดว่าจะได้รับ : </span>
-            <div class="fst-italic" v-html="item.benefit"></div>
-            <div class="separator separator-dotted my-2"></div>
-          </div>
-
-          <div>
-            <hr class="my-6" />
-            <h6>ขั้นตอนและระยะเวลาของแผนดำเนินงาน</h6>
+          <div class="pt-6">
+            <h6 class="py-5 px-5 bg-warning rounded">
+              ขั้นตอนและระยะเวลาของแผนดำเนินงาน
+            </h6>
             <div v-for="(ml, idx) in method_list" :key="idx" class="row">
               <div class="col-md-12 mt-10">
                 <span class="fw-bold">ลำดับที่ {{ idx + 1 }} : </span>
@@ -153,15 +159,10 @@
             <hr class="my-6" />
           </div>
 
-          <div class="col-md-12">
-            <span class="fw-bold">สถานที่ทำการทดลอง และ/หรือเก็บข้อมูล : </span>
-            <div class="fst-italic" v-html="item.location"></div>
-            <div class="separator separator-dotted my-2"></div>
-          </div>
-
-          <div>
-            <hr class="my-6" />
-            <h6>งบประมาณในการดำเนินงานวิจัย</h6>
+          <div class="pt-6">
+            <h6 class="py-5 px-5 bg-warning rounded">
+              งบประมาณในการดำเนินงานวิจัย
+            </h6>
             <h6 class="mt-10">หมวดค่าตอบแทน เฉพาะค่าจ้างผู้ช่วยวิจัย</h6>
             <div v-for="(bg, idx) in budget" :key="idx" class="row">
               <div class="col-md-9 mt-5">
@@ -173,7 +174,15 @@
               </div>
               <div class="col-md-3 mt-5">
                 <span class="fw-bold">จำนวนเงิน : </span>
-                <span class="fst-italic">{{ bg.amount }}</span>
+                <span class="fst-italic"
+                  >{{
+                    Number(bg.amount).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  }}
+                  บาท</span
+                >
                 <div class="separator separator-dotted my-2"></div>
               </div>
             </div>
@@ -194,7 +203,15 @@
               </div>
               <div class="col-md-3 mt-5">
                 <span class="fw-bold">จำนวนเงิน : </span>
-                <span class="fst-italic">{{ bg.amount }}</span>
+                <span class="fst-italic"
+                  >{{
+                    Number(bg.amount).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  }}
+                  บาท</span
+                >
                 <div class="separator separator-dotted my-2"></div>
               </div>
             </div>
@@ -213,15 +230,25 @@
               </div>
               <div class="col-md-3 mt-5">
                 <span class="fw-bold">จำนวนเงิน : </span>
-                <span class="fst-italic">{{ bg.amount }}</span>
+                <span class="fst-italic"
+                  >{{
+                    Number(bg.amount).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  }}
+                  บาท</span
+                >
                 <div class="separator separator-dotted my-2"></div>
               </div>
             </div>
             <hr class="my-6" />
           </div>
 
-          <div class="col-md-12">
-            <span class="fw-bold">รายการเอกสารอ้างอิงหรือบรรณานุกรม : </span>
+          <div class="pt-6">
+            <h6 class="py-5 px-5 bg-warning rounded">
+              รายการเอกสารอ้างอิงหรือบรรณานุกรม
+            </h6>
             <div class="fst-italic" v-html="item.references"></div>
             <div class="separator separator-dotted my-2"></div>
           </div>
@@ -249,9 +276,6 @@ import buddhistEra from "dayjs/plugin/buddhistEra";
 dayjs.extend(buddhistEra);
 // Import FormWizard
 import { TabContent } from "vue3-form-wizard";
-
-import useBasicData from "@/composables/useBasicData";
-import useMasterData from "@/composables/useMasterData";
 
 export default defineComponent({
   name: "complaint-form-tab3",
@@ -297,18 +321,9 @@ export default defineComponent({
     const {
       tab_index,
       item,
-      budget,
-      budget2,
-      budget3,
-      researcher,
-      method_list,
     } = toRefs(props);
 
-    const selectOptions = ref({
-      //   complaint_channels: <any>[],
-      //   card_types: useBasicData().card_types,
-      //   is_anonymouses: useBasicData().is_anonymouses,
-    });
+    const selectOptions = ref({});
 
     const file_attach = reactive<any>([]);
 

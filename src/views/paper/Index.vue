@@ -1,10 +1,11 @@
 <template>
   <!--begin::Wrapper-->
   <div class="container mt-5">
+    <!-- Search -->
     <div class="card shadow-sm my-6">
-      <!-- Search -->
       <SearchComponent :search="search" @search="fetchItems" @clear="onClear" />
     </div>
+    <!-- Profile -->
     <div class="card shadow-sm my-5">
       <div class="card-header bg-white">
         <h4 class="card-title">ข้อมูลส่วนตัว</h4>
@@ -38,7 +39,6 @@
       </div>
     </div>
     <div class="card shadow-sm my-5">
-      <!-- Button Add & Export -->
       <div class="card-header bg-white">
         <h4 class="card-title">รายการเสนอโครงการวิจัย</h4>
         <div class="card-toolbar">
@@ -49,22 +49,6 @@
             <i class="bi bi-file-earmark-plus-fill fs-4"></i>
             <span class="d-none d-lg-inline-block ms-2">เสนอโครงการวิจัย</span>
           </button>
-
-          <!-- <div class="dropdown">
-            <button
-              class="btn btn-outline btn-outline-success pe-sm-3 ps-sm-5 dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="bi bi-file-earmark-arrow-down-fill fs-4"></i>
-              <span class="d-none d-lg-inline-block ms-2">ส่งออกรายการ</span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" @click="onExport()">Excel</a></li>
-            </ul>
-          </div> -->
         </div>
       </div>
       <div class="card-body table-responsive">
@@ -72,7 +56,12 @@
         <ListComponent
           :items="items"
           :paginationData="paginationData"
+          :sortKey="sortKey"
+          :sortOrder="sortOrder"
           @update:currentPage="paginationData.currentPage = $event"
+          @update:perPage="paginationData.perPage = $event"
+          @sort="(key: any) => {
+            sortedItems(key)}"
           @edit="(it: any) => {goToEditPage(it.id)}"
           @detail="
             (it: any) => {
@@ -140,6 +129,8 @@ export default defineComponent({
     // UI Variable
     const isLoading = ref<any>(false);
     const router = useRouter();
+    const sortKey = ref<any>("");
+    const sortOrder = ref<any>(1);
 
     // Variable
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -172,11 +163,11 @@ export default defineComponent({
         rp_no: search.rp_no ?? undefined,
         fullname: search.fullname ?? undefined,
         status_id: search.status_id?.id ?? undefined,
-        user_id: userData.data.id,
-        orderBy: "created_at",
-        order: "desc",
+        orderBy: sortKey.value != "" ? sortKey.value : "created_at",
+        order: sortOrder.value == 1 ? "asc" : "desc",
         perPage: paginationData.perPage,
         currentPage: paginationData.currentPage,
+        user_id: userData.data.id,
       };
 
       const { data } = await ApiService.query("paper", {
@@ -247,6 +238,13 @@ export default defineComponent({
       }
     );
 
+    watch(
+      () => paginationData.perPage,
+      () => {
+        fetchItems();
+      }
+    );
+
     const goToAddPage = () => {
       if (
         user_item.prefix_name == "" ||
@@ -275,6 +273,18 @@ export default defineComponent({
       router.push({ name: "paper-edit", params: { id: id } });
     };
 
+    const sortedItems = (key: any) => {
+      if (sortKey.value === key) {
+        sortOrder.value = sortOrder.value * -1;
+      } else {
+        sortKey.value = key;
+      }
+
+      if (!sortKey.value) return items;
+
+      fetchItems();
+    };
+
     return {
       search,
       items,
@@ -294,34 +304,10 @@ export default defineComponent({
       openEditUserModal,
       onEditUserModal,
       user_item,
+      sortKey,
+      sortOrder,
+      sortedItems,
     };
   },
 });
 </script>
-
-<style>
-.vs__dropdown-toggle {
-  border: none;
-}
-
-.v-select {
-  padding: 0.4em 0.5em;
-}
-
-.dp__main {
-  padding: 0.35em 0em;
-}
-
-.dp__input {
-  border: none !important;
-}
-@media only screen and (max-width: 768px) {
-  .card > .card-body {
-    padding: 0px;
-  }
-}
-
-.bg-color-police {
-  background-color: #800001;
-}
-</style>

@@ -3,7 +3,7 @@
     <div class="card" v-if="item">
       <div class="card-body">
         <form-wizard
-          color="#800001"
+          color="#ffc600"
           ref="formStep"
           finishButtonText="บันทึก"
           backButtonText="ย้อนกลับ"
@@ -13,17 +13,25 @@
           @on-change="onTabChange"
           @on-complete="onComplete"
         >
-          <Tab1
+          <Tab1 :item="item" :errors="errors" />
+
+          <Tab2
             :item="item"
             :budget="budget"
             :budget2="budget2"
             :budget3="budget3"
             :researcher="researcher"
             :method_list="method_list"
+            :errors="errors"
+            :budget_errors="budget_errors"
+            :budget2_errors="budget2_errors"
+            :budget3_errors="budget3_errors"
+            :researcher_errors="researcher_errors"
+            :method_list_errors="method_list_errors"
             :r="r"
           />
 
-          <Tab2
+          <Tab3
             :tab_index="tab_index"
             :item="item"
             :budget="budget"
@@ -39,8 +47,7 @@
               <button
                 v-if="props.activeTabIndex > 0"
                 @click.native="props.prevTab()"
-                class="btn text-white float-left"
-                style="background-color: #800001"
+                class="btn btn-danger  text-white float-left"
                 :disabled="isLoading"
               >
                 ย้อนกลับ
@@ -51,8 +58,7 @@
               <button
                 v-if="!props.isLastStep"
                 @click.native="props.nextTab()"
-                class="btn text-white"
-                style="background-color: #800001"
+                class="btn btn-primary text-white"
                 :disabled="isLoading"
               >
                 ถัดไป
@@ -61,8 +67,7 @@
               <button
                 v-else
                 @click.native="onComplete(0)"
-                class="finish-button btn text-white"
-                style="background-color: #800001"
+                class="btn btn-primary text-white"
                 :disabled="isLoading"
               >
                 {{ props.isLastStep ? "บันทึก" : "Next" }}
@@ -109,8 +114,9 @@ dayjs.extend(buddhistEra);
 dayjs.extend(customParseFormat);
 
 // Import Component
-import Tab1 from "@/components/paper/Tab1Add.vue";
-import Tab2 from "@/components/paper/Tab2.vue";
+import Tab1 from "@/components/paper/form/Tab1Add.vue";
+import Tab2 from "@/components/paper/form/Tab2.vue";
+import Tab3 from "@/components/paper/form/Tab3.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
 
 // Import Yup Validate
@@ -122,6 +128,7 @@ export default defineComponent({
     FormWizard,
     Tab1,
     Tab2,
+    Tab3,
     Preloader,
   },
   setup() {
@@ -285,6 +292,12 @@ export default defineComponent({
     const budget_errors = reactive<any>({
       ...budget_errors_default,
     });
+    const budget2_errors = reactive<any>({
+      ...budget_errors_default,
+    });
+    const budget3_errors = reactive<any>({
+      ...budget_errors_default,
+    });
 
     const researcher_errors_default = {
       prefix_name: { error: 0, text: "" },
@@ -351,7 +364,6 @@ export default defineComponent({
           errors[fieldName].error = 1;
           errors[fieldName].text = errorMessage;
         });
-        console.log(errors);
         useToast("ระบุข้อมูลไม่ครบถ้วน", "error");
         return false;
       }
@@ -567,55 +579,25 @@ export default defineComponent({
       // event
       onTabChange,
       onComplete,
+      //   Error
+      errors,
+      budget_errors,
+      budget2_errors,
+      budget3_errors,
+      researcher_errors,
+      method_list_errors,
       r,
     };
   },
 });
 </script>
 
-<style scoped>
-@media only screen and (max-width: 768px) {
-  .card > .card-body {
-    padding: 0px;
-  }
-}
-.modal-content {
-  background-color: #d9f4fe;
-}
-</style>
-
 <style>
-.wizard-icon-container {
-  background-color: #800001 !important;
-}
-
-.form-check-label {
-  color: #444;
-}
-.pac-container {
-  z-index: 9999 !important;
-}
-
-.stepTitle {
-  color: #800001;
-  font-weight: bold;
-}
-</style>
-
-<style>
-.vs__dropdown-toggle {
+.vs--searchable .vs__dropdown-toggle {
   border: none;
 }
 
-.v-select {
-  padding: 0.4em 0.5em;
-}
-
-.dp__pointer {
-  border: none;
-}
-
-.fr-wrapper > div:first-child {
+/* .fr-wrapper > div:first-child {
   display: none;
-}
+} */
 </style>

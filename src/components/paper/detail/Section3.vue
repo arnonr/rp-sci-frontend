@@ -133,7 +133,6 @@ export default defineComponent({
 
     // Mounted
     onMounted(async () => {
-      console.log(item.value);
     });
 
     // Watch

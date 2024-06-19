@@ -122,9 +122,7 @@ export default defineComponent({
     const { item } = toRefs(props);
 
     // Mounted
-    onMounted(async () => {
-      console.log(item.value);
-    });
+    onMounted(async () => {});
 
     // Watch
     // Return

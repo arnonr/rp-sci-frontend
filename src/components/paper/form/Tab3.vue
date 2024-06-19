@@ -372,7 +372,6 @@ export default defineComponent({
     watch(
       () => tab_index.value,
       () => {
-        console.log("FREEDOM")
         beforeShowTab();
       }
     );

@@ -281,10 +281,8 @@ export default defineComponent({
 
       if (item.value.keyword != null && item.value.keyword != "") {
         tags.value = [];
-        console.log(tags.value)
       } else {
         tags.value = item.value.keyword.split(",");
-        console.log(tags.value)
       }
     });
 

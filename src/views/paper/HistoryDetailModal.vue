@@ -108,7 +108,6 @@ export default defineComponent({
           params: { paper_id: paper_id.value, perPage: 100 },
         });
         Object.assign(items, data.data);
-        console.log(items);
         items.forEach((el: any) => {
           history_items.value.push({
             date_at: el.created_at,

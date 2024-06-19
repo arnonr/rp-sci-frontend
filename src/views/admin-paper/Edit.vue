@@ -470,8 +470,6 @@ export default defineComponent({
           return el;
         });
         Object.assign(researcher, new_rs);
-
-        console.log(item);
       } catch (error) {
         console.log(error);
       }

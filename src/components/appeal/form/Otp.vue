@@ -466,7 +466,6 @@ export default defineComponent({
             .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
         }
       }
-      //   console.log(complaint_item.value.complaint_channel_all.join(","));
 
       let data_item = {
         complaint_type_id:
@@ -511,7 +510,6 @@ export default defineComponent({
           complaint_item.value.firstname + " " + complaint_item.value.lastname,
       };
 
-      console.log(data_item);
 
       await ApiService.postFormData("complaint/", { ...data_item })
         .then(({ data }) => {

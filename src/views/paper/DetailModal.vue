@@ -56,45 +56,93 @@
     </div>
 
     <!-- PDF -->
+
+    <!-- :paginate-elements-by-height="1400" -->
+    <!-- <vue3-html2pdf
+      :show-layout="false"
+      :float-layout="true"
+      filename="rp_data"
+      :enable-download="true"
+      :preview-modal="true"
+      pdf-format="a4"
+      :pdf-quality="2"
+      pdf-orientation="portrait"
+      :pdf-content-selector="'.generate-pdf'"
+      :margin="[60, 10, 60, 10]"
+      :paginate-elements-by-height="297"
+      :paginate-elements-by-height-value="297"
+      :manual-pagination="true"
+      ref="html2Pdf"
+    >
+      <template v-slot:pdf-content id="pdf">
+        <div class="generate-pdf">
+          <div class="pdf-section">
+            <SectionPDF1 :item="item" />
+          </div>
+          <div class="html2pdf__page-break"></div>
+
+          <div class="pdf-section">
+            <SectionPDF2
+              :item="item"
+              :researcher="researcher"
+              :method_list="method_list"
+            />
+          </div>
+          <div class="html2pdf__page-break"></div>
+
+          <div class="pdf-section">
+            <SectionPDF3
+              :item="item"
+              :budget="budget"
+              :budget2="budget2"
+              :budget3="budget3"
+              :file_attach="file_attach"
+            />
+          </div>
+        </div>
+      </template>
+    </vue3-html2pdf> -->
     <vue3-html2pdf
       :show-layout="false"
       :float-layout="true"
+      filename="rp_data"
       :enable-download="true"
       :preview-modal="true"
-      :paginate-elements-by-height="1400"
-      filename="rp_data"
-      :pdf-quality="2"
-      :manual-pagination="false"
       pdf-format="a4"
+      :pdf-quality="2"
       pdf-orientation="portrait"
-      pdf-content-width="800px"
+      :pdf-content-selector="'.generate-pdf'"
+      :margin="[10, 10, 60, 10]"
+      :manual-pagination="true"
       ref="html2Pdf"
     >
-      <template v-slot:pdf-content>
-        <div
-          style="
-            margin-top: 50px;
-            margin-right: 50px;
-            margin-bottom: 50px;
-            margin-left: 50px;
-          "
-          class="generate-pdf"
-        >
-          <SectionPDF1 :item="item" />
+      <template v-slot:pdf-content id="pdf">
+        <div class="generate-pdf">
+          <div class="pdf-section">
+            <SectionPDF1 :item="item" />
+          </div>
 
-          <SectionPDF2
-            :item="item"
-            :researcher="researcher"
-            :method_list="method_list"
-          />
+          <!-- <div class="html2pdf__page-break"></div> -->
 
-          <SectionPDF3
-            :item="item"
-            :budget="budget"
-            :budget2="budget2"
-            :budget3="budget3"
-            :file_attach="file_attach"
-          />
+          <div class="pdf-section">
+            <SectionPDF2
+              :item="item"
+              :researcher="researcher"
+              :method_list="method_list"
+            />
+          </div>
+
+          <!-- <div class="html2pdf__page-break"></div> -->
+
+          <div class="pdf-section">
+            <SectionPDF3
+              :item="item"
+              :budget="budget"
+              :budget2="budget2"
+              :budget3="budget3"
+              :file_attach="file_attach"
+            />
+          </div>
         </div>
       </template>
     </vue3-html2pdf>
@@ -321,5 +369,18 @@ export default defineComponent({
 
 .separator.separator-dotted {
   border-bottom-color: #ccc;
+}
+</style>
+
+<style>
+
+.generate-pdf {
+  padding: 0mm 10mm 0mm 10mm; 
+}
+
+
+.html2pdf__page-break {
+  page-break-before: always; /* บังคับให้เริ่มหน้าใหม่ */
+  height: 0; /* ซ่อนเส้นแบ่งหน้า */
 }
 </style>

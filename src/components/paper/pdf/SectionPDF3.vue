@@ -43,7 +43,14 @@
         </div>
         <div class="col-md-3 mt-5">
           <span class="fw-bold">จำนวนเงิน : </span>
-          <span class="fst-italic">{{ bg.amount }}</span>
+          <span class="fst-italic fw-bold"
+            >{{
+              Number(bg.amount).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+            }} </span
+          ><span> บาท</span>
           <div class="separator separator-dotted my-2"></div>
         </div>
       </div>
@@ -62,7 +69,14 @@
         </div>
         <div class="col-md-3 mt-5">
           <span class="fw-bold">จำนวนเงิน : </span>
-          <span class="fst-italic">{{ bg.amount }}</span>
+          <span class="fst-italic fw-bold"
+            >{{
+              Number(bg.amount).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+            }} </span
+          ><span> บาท</span>
           <div class="separator separator-dotted my-2"></div>
         </div>
       </div>

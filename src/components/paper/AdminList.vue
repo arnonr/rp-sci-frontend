@@ -61,13 +61,12 @@
                     @click="
                       handleDetail({
                         id: it.id,
-                        complainant_id: it.complainant_id,
                       })
                     "
                     >รายละเอียด</a
                   >
                 </li>
-                <li v-if="it.return_paper.length != 0">
+                <li>
                   <a
                     class="dropdown-item cursor-pointer"
                     @click="
@@ -81,16 +80,52 @@
                 <li>
                   <a
                     class="dropdown-item cursor-pointer"
-                    v-if="
-                      (it.status_id != 2 && it.status_id != 4) ||
-                      userData.data.level
-                    "
+                    v-if="it.status_id == 1 || it.status_id == 3"
                     @click="
                       handleEdit({
                         id: it.id,
                       })
                     "
                     >แก้ไขข้อมูล</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    class="dropdown-item cursor-pointer"
+                    v-if="it.status_id == 2"
+                    @click="
+                      handleReject({
+                        id: it.id,
+                      })
+                    "
+                    >ส่งกลับให้แก้ไข</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    class="dropdown-item cursor-pointer"
+                    v-if="it.status_id == 2"
+                    @click="
+                      handleManageReview({
+                        id: it.id,
+                      })
+                    "
+                    >จัดการผู้ทรง</a
+                  >
+                </li>
+
+                <li>
+                  <a
+                    class="dropdown-item cursor-pointer"
+                    v-if="it.status_id == 2"
+                    @click="
+                      handleApprove({
+                        id: it.id,
+                      })
+                    "
+                    >ยกเลิก/ตอบรับข้อเสนอ</a
                   >
                 </li>
               </ul>
@@ -138,7 +173,7 @@ import useStatusData from "@/composables/useStatusData";
 import useDateData from "@/composables/useDateData";
 
 export default defineComponent({
-  name: "list-paper",
+  name: "admin-list-paper",
   components: {
     BlogPagination,
   },
@@ -188,12 +223,28 @@ export default defineComponent({
       emit("edit", item);
     };
 
-    const handleSort = (key: any) => {
-      emit("sort", key);
+    const handleReject = (item: any) => {
+      emit("reject", item);
+    };
+
+    const handleApprove = (item: any) => {
+      emit("approve", item);
+    };
+
+    const handleCancel = (item: any) => {
+      emit("cancel", item);
+    };
+
+    const handleManageReview = (item: any) => {
+      emit("manage-review", item);
     };
 
     const handleHistoryDetail = (item: any) => {
       emit("history-detail", item);
+    };
+
+    const handleSort = (key: any) => {
+      emit("sort", key);
     };
 
     const convertStatus = (status: any) => {
@@ -223,6 +274,10 @@ export default defineComponent({
       items,
       handleDetail,
       handleEdit,
+      handleReject,
+      handleApprove,
+      handleCancel,
+      handleManageReview,
       handleHistoryDetail,
       convertDate: useDateData().convertDate,
       convertStatus,

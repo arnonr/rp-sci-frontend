@@ -14,10 +14,9 @@ export default () => {
     },
     {
       id: 3,
-      name_th:
-        "แก้ไขข้อเสนอโครงการ",
+      name_th: "แก้ไขข้อเสนอโครงการ",
       name_en: null,
-      bg_color: "#17c653",
+      bg_color: "#FFC0CB",
     },
     {
       id: 4,
@@ -29,9 +28,7 @@ export default () => {
       id: 5,
       name_th: "ยกเลิก",
       name_en: null,
-      bg_color: "#7be382",
-      bg_bureau_color: "#7be382",
-      bg_division_color: "#7be382",
+      bg_color: "#ff0505",
     },
   ];
 

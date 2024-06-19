@@ -22,6 +22,11 @@
           @sort="(key: any) => {
             sortedItems(key)}"
           @edit="(it: any) => {goToEditPage(it.id)}"
+          @reject="(it: any) => {item={...it}; openRejectModal = true;}"
+          @approve="(it: any) => { item={...it};  openApproveModal = true}"
+          @cancel="(it: any) =>{item={...it};  openCancelModal = true}"
+          @history-detail="(it: any) =>{item={...it};  openHistoryDetailModal = true}"
+          @manage-review="(it: any) =>{ item={...it}; openManageReviewModal = true}"
           @detail="
             (it: any) => {
               Object.assign(item, it);
@@ -33,19 +38,6 @@
     </div>
 
     <div>
-      <div id="edit-user-modal">
-        <EditUserPage
-          v-if="openEditUserModal == true"
-          :id="user_item.id"
-          @close-modal="
-            () => {
-              openEditUserModal = false;
-            }
-          "
-          @reload="fetchUser"
-        />
-      </div>
-
       <!-- Modal Detail ดูข้อมูล -->
       <div id="detail-modal">
         <DetailPage
@@ -58,6 +50,72 @@
           "
         />
       </div>
+
+      <div id="reject-form-modal">
+        <RejectPaperPage
+          v-if="openRejectModal == true"
+          :item="item"
+          @close-modal="
+            () => {
+              openRejectModal = false;
+            }
+          "
+          @reload="fetchItems"
+        />
+      </div>
+
+      <div id="reject-detail-modal">
+        <HistoryDetailPage
+          v-if="openHistoryDetailModal == true"
+          :paper_id="item.id"
+          :item="item"
+          @close-modal="
+            () => {
+              openHistoryDetailModal = false;
+            }
+          "
+        />
+      </div>
+
+      <div id="approve-modal">
+        <ApprovePaperPage
+          v-if="openApproveModal == true"
+          :item="item"
+          @close-modal="
+            () => {
+              openApproveModal = false;
+            }
+          "
+          @reload="fetchItems"
+        />
+      </div>
+
+      <!--
+      <div id="cancel-modal">
+        <CancelPaperPage
+          v-if="openCancelModal == true"
+          :id="user_item.id"
+          @close-modal="
+            () => {
+              openCancelModal = false;
+            }
+          "
+          @reload="fetchItems"
+        />
+      </div>
+
+      <div id="manage-review-modal">
+        <ManageReviewPaperPage
+          v-if="openManageReviewModal == true"
+          :id="user_item.id"
+          @close-modal="
+            () => {
+              openManageReviewModal = false;
+            }
+          "
+          @reload="fetchItems"
+        />
+      </div> -->
     </div>
   </div>
 </template>
@@ -66,23 +124,30 @@
 import { defineComponent, ref, reactive, onMounted, watch } from "vue";
 import ApiService from "@/core/services/ApiService";
 import { useRouter } from "vue-router";
-import useToast from "@/composables/useToast";
 
 // Component
 import SearchComponent from "@/components/paper/Search.vue";
-import ListComponent from "@/components/paper/List.vue";
+import ListComponent from "@/components/paper/AdminList.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
-import EditUserPage from "@/views/user/EditUser.vue";
 import DetailPage from "@/views/paper/DetailModal.vue";
+import RejectPaperPage from "@/views/admin-paper/RejectModal.vue";
+// import CancelPaperPage from "@/views/admin-paper/CancelModal.vue";
+import ApprovePaperPage from "@/views/admin-paper/ApproveModal.vue";
+// import ManageReviewPaperPage from "@/views/admin-paper/ManageReviewModal.vue";
+import HistoryDetailPage from "@/views/paper/HistoryDetailModal.vue";
 
 export default defineComponent({
-  name: "paper",
+  name: "admin-paper",
   components: {
     SearchComponent,
     ListComponent,
     Preloader,
-    EditUserPage,
     DetailPage,
+    RejectPaperPage,
+    // CancelPaperPage,
+    ApprovePaperPage,
+    // ManageReviewPaperPage,
+    HistoryDetailPage,
   },
   setup() {
     // UI Variable
@@ -92,10 +157,6 @@ export default defineComponent({
     const sortOrder = ref<any>(-1);
 
     // Variable
-    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-    const openEditUserModal = ref<any>(false);
-    const user_item = reactive<any>({});
-
     const search = reactive<any>({});
 
     const items = reactive<any[]>([]);
@@ -111,6 +172,11 @@ export default defineComponent({
     const openDetailModal = ref(false);
     const openEditModal = ref(false);
     const openReceive1Modal = ref(false);
+    const openRejectModal = ref(false);
+    const openApproveModal = ref(false);
+    const openCancelModal = ref(false);
+    const openManageReviewModal = ref(false);
+    const openHistoryDetailModal = ref(false);
 
     // Fetch Data
     const fetchItems = async () => {
@@ -141,23 +207,6 @@ export default defineComponent({
       paginationData.currentPage = data.currentPage;
       isLoading.value = false;
     };
-    const fetchUser = async () => {
-      try {
-        const { data } = await ApiService.query("user/" + userData.data.id, {});
-        Object.assign(user_item, {
-          ...data.data,
-          department_id:
-            data.data.department_id != null
-              ? {
-                  name: data.data.department.name,
-                  id: data.data.department_id,
-                }
-              : null,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
     // Event
     const onClear = () => {
@@ -180,13 +229,8 @@ export default defineComponent({
       Object.assign(item, it);
     };
 
-    const onEditUserModal = () => {
-      openEditUserModal.value = true;
-    };
-
     // Mounted
     onMounted(() => {
-      fetchUser();
       fetchItems();
     });
 
@@ -235,18 +279,19 @@ export default defineComponent({
       onExport,
       onDetailModal,
       fetchItems,
-      fetchUser,
       openDetailModal,
       openEditModal,
       openReceive1Modal,
       goToAddPage,
       goToEditPage,
-      openEditUserModal,
-      onEditUserModal,
-      user_item,
       sortKey,
       sortOrder,
       sortedItems,
+      openRejectModal,
+      openApproveModal,
+      openCancelModal,
+      openManageReviewModal,
+      openHistoryDetailModal,
     };
   },
 });

@@ -69,6 +69,7 @@
               openDetailModal = true;
             }
           "
+          @history-detail="(it: any) =>{item={...it};  openHistoryDetailModal = true}"
         />
       </div>
     </div>
@@ -99,6 +100,20 @@
           "
         />
       </div>
+
+      <!-- Modal Reject Detail ดูข้อมูลประวัติการแก้ไข -->
+      <div id="history-detail-modal">
+        <HistoryDetailPage
+          v-if="openHistoryDetailModal == true"
+          :paper_id="item.id"
+          :item="item"
+          @close-modal="
+            () => {
+              openHistoryDetailModal = false;
+            }
+          "
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -115,6 +130,7 @@ import ListComponent from "@/components/paper/List.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
 import EditUserPage from "@/views/user/EditUser.vue";
 import DetailPage from "@/views/paper/DetailModal.vue";
+import HistoryDetailPage from "@/views/paper/HistoryDetailModal.vue";
 
 export default defineComponent({
   name: "paper",
@@ -124,6 +140,7 @@ export default defineComponent({
     Preloader,
     EditUserPage,
     DetailPage,
+    HistoryDetailPage,
   },
   setup() {
     // UI Variable
@@ -152,6 +169,7 @@ export default defineComponent({
     const openDetailModal = ref(false);
     const openEditModal = ref(false);
     const openReceive1Modal = ref(false);
+    const openHistoryDetailModal = ref(false);
 
     // Fetch Data
     const fetchItems = async () => {
@@ -307,6 +325,7 @@ export default defineComponent({
       sortKey,
       sortOrder,
       sortedItems,
+      openHistoryDetailModal,
     };
   },
 });

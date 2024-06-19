@@ -662,7 +662,6 @@ export default defineComponent({
         benefit: item.benefit,
         location: item.location,
         references: item.references,
-        status_id: 1,
         sended_at: is_send == 1 ? dayjs().format("YYYY-MM-DD") : null,
         sended_user_id: is_send == 1 ? userData.data.id : null,
         user_id: userData.data.id,

@@ -661,11 +661,16 @@ export default defineComponent({
         location: item.location,
         references: item.references,
         // status_id: 1,
-        sended_at: dayjs().format("YYYY-MM-DD"),
+        sended_at: is_send == 1 ? dayjs().format("YYYY-MM-DD") : null,
+        sended_user_id: is_send == 1 ? userData.data.id : null,
         // sended_user_id: userData.data.id,
         // user_id: userData.data.id,
         is_send: is_send,
       };
+
+      if (is_send == 1) {
+        data_item["status_id"] = 2;
+      }
 
       await ApiService.put("paper/" + item.id, data_item)
         .then(({ data }) => {

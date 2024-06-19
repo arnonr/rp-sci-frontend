@@ -48,7 +48,7 @@
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
-          }}</span>
+          }}</span><span> บาท</span>
           <div class="separator separator-dotted my-2"></div>
         </div>
       </div>
@@ -72,7 +72,7 @@
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
-          }}</span>
+          }}</span><span> บาท</span>
           <div class="separator separator-dotted my-2"></div>
         </div>
       </div>

@@ -768,6 +768,10 @@ export default defineComponent({
 </script>
 
 <style>
+.vs--searchable .vs__dropdown-toggle {
+  border: none;
+}
+
 /* .fr-wrapper > div:first-child {
   display: none;
 } */

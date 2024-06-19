@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card" v-if="item">
+    <div class="card" v-if="item.id != null">
       <div class="card-body">
         <form-wizard
           color="#ffc600"
@@ -64,14 +64,14 @@
                 ถัดไป
               </button>
 
-              <button
+              <!-- <button
                 v-else
                 @click.native="onComplete(0)"
                 class="btn btn-primary text-white"
                 :disabled="isLoading"
               >
                 {{ props.isLastStep ? "บันทึก" : "Next" }}
-              </button>
+              </button> -->
 
               <button
                 v-if="props.isLastStep"
@@ -80,7 +80,7 @@
                 style="background-color: green"
                 :disabled="isLoading"
               >
-                {{ "ส่งข้อมูล" }}
+                {{ "บันทึก" }}
               </button>
             </div>
           </template>
@@ -103,7 +103,7 @@ import { FormWizard } from "vue3-form-wizard";
 import "vue3-form-wizard/dist/style.css";
 // Use Toast Composables
 import useToast from "@/composables/useToast";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 // Import Dayjs
 import dayjs from "dayjs";
@@ -118,6 +118,9 @@ import Tab1 from "@/components/paper/form/Tab1Add.vue";
 import Tab2 from "@/components/paper/form/Tab2.vue";
 import Tab3 from "@/components/paper/form/Tab3.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
+
+// Use Composables
+import useBasicData from "@/composables/useBasicData";
 
 // Import Yup Validate
 import * as Yup from "yup";
@@ -134,6 +137,7 @@ export default defineComponent({
   setup() {
     // UI Variable
     const router = useRouter();
+    const route = useRoute();
     const isLoading = ref<any>(false);
 
     const tab_index = ref(0);
@@ -144,6 +148,8 @@ export default defineComponent({
     // Variable
     const r = (Math.random() + 1).toString(36).substring(7);
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    const researcher_types = useBasicData().researcher_types;
+
     // Item Variable
     const item = reactive<any>({
       rp_no: "",
@@ -193,6 +199,18 @@ export default defineComponent({
     ] as any[]);
 
     const budget_old = reactive([
+      {
+        ...budget_default,
+      },
+    ] as any[]);
+
+    const budget2_old = reactive([
+      {
+        ...budget_default,
+      },
+    ] as any[]);
+
+    const budget3_old = reactive([
       {
         ...budget_default,
       },
@@ -390,8 +408,76 @@ export default defineComponent({
       }
     };
 
-    // Event
+    const fetchItem = async () => {
+      try {
+        const { data } = await ApiService.query("paper/" + route.params.id, {});
+        Object.assign(item, {
+          ...data.data,
+          department_id:
+            data.data.department_id != null
+              ? {
+                  name: data.data.department.name,
+                  id: data.data.department_id,
+                }
+              : null,
+          paper_type_id:
+            data.data.paper_type_id != null
+              ? {
+                  name: data.data.paper_type.name,
+                  id: data.data.paper_type_id,
+                }
+              : null,
+        });
 
+        budget.length = 0;
+        budget_old.length = 0;
+        Object.assign(budget, data.data.budget);
+        Object.assign(budget_old, data.data.budget);
+
+        budget2.length = 0;
+        budget2_old.length = 0;
+        Object.assign(budget2, data.data.budget2);
+        Object.assign(budget2_old, data.data.budget2);
+
+        budget3.length = 0;
+        budget3_old.length = 0;
+        Object.assign(budget3, data.data.budget3);
+        Object.assign(budget3_old, data.data.budget3);
+
+        method_list.length = 0;
+        method_list_old.length = 0;
+        Object.assign(method_list, data.data.method_list);
+        Object.assign(method_list_old, data.data.method_list);
+
+        researcher.length = 0;
+        researcher_old.length = 0;
+        Object.assign(researcher_old, data.data.researcher);
+
+        let new_rs = data.data.researcher.map((el: any) => {
+          if (el.department_id != null) {
+            el.department_id = {
+              id: el.department_id,
+              name: el.department.name,
+            };
+          }
+
+          if (el.researcher_type != null) {
+            el.researcher_type = researcher_types.find((x: any) => {
+              return x.id == el.researcher_type;
+            });
+          }
+
+          return el;
+        });
+        Object.assign(researcher, new_rs);
+
+        console.log(item);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // Event
     const onPaperValidate = async () => {
       Object.assign(errors, {
         ...errors_default,
@@ -525,22 +611,20 @@ export default defineComponent({
       try {
         isLoading.value = true;
         // Validate
-        if (is_send == 1) {
-          let check1: any = await onPaperValidate();
-          let check2: any = true; //await onResearcherValidate();
-          let check3: any = true; //await onMethodListValidate();
-          let check4: any = true; //await  onBudgetValidate();
+        let check1: any = await onPaperValidate();
+        let check2: any = true; //await onResearcherValidate();
+        let check3: any = true; //await onMethodListValidate();
+        let check4: any = true; //await  onBudgetValidate();
 
-          if (
-            check1 == false ||
-            check2 == false ||
-            check3 == false ||
-            check4 == false
-          ) {
-            useToast("ระบุข้อมูลไม่ครบถ้วน", "error");
-            isLoading.value = false;
-            return false;
-          }
+        if (
+          check1 == false ||
+          check2 == false ||
+          check3 == false ||
+          check4 == false
+        ) {
+          useToast("ระบุข้อมูลไม่ครบถ้วน", "error");
+          isLoading.value = false;
+          return false;
         }
 
         await onSavePaper(is_send);
@@ -552,7 +636,7 @@ export default defineComponent({
         isLoading.value = false;
 
         useToast("บันทึกข้อมูลเสร็จสิ้น");
-        router.push({ name: "paper" });
+        router.push({ name: "admin-paper" });
       } catch (error) {
         isLoading.value = false;
         useToast("เกิดข้อผิดพลาดในการบันทึกข้อมูล", "error");
@@ -576,19 +660,14 @@ export default defineComponent({
         benefit: item.benefit,
         location: item.location,
         references: item.references,
-        status_id: 1,
+        // status_id: 1,
         sended_at: dayjs().format("YYYY-MM-DD"),
-        sended_user_id: userData.data.id,
-        user_id: userData.data.id,
+        // sended_user_id: userData.data.id,
+        // user_id: userData.data.id,
         is_send: is_send,
-        is_active: 1,
       };
 
-      if (is_send == 1) {
-        data_item["status_id"] = 2;
-      }
-
-      await ApiService.post("paper/", data_item)
+      await ApiService.put("paper/" + item.id, data_item)
         .then(({ data }) => {
           if (data.msg != "success") {
             throw new Error("ERROR");
@@ -614,10 +693,19 @@ export default defineComponent({
           researcher_type: researcher[i].researcher_type?.id,
           percentage: researcher[i].percentage,
           paper_id: item.id,
-          is_active: 1,
         };
 
-        await ApiService.post("researcher/", data_researcher_item)
+        let api = {
+          type: "post",
+          url: "researcher/",
+        };
+
+        if (data_researcher_item.id != null) {
+          api.type = "put";
+          api.url = "researcher/" + data_researcher_item.id;
+        }
+
+        await ApiService[api.type](api.url, data_researcher_item)
           .then(({ data }) => {
             if (data.msg != "success") {
               throw new Error("ERROR");
@@ -626,6 +714,25 @@ export default defineComponent({
           .catch(({ response }) => {
             console.log(response);
           });
+      }
+
+      //   old
+      for (let i = 0; i < researcher_old.length; i++) {
+        let check = researcher.find((x: any) => {
+          return x.id == researcher_old[i].id;
+        });
+
+        if (!check) {
+          await ApiService.delete("researcher/" + researcher_old[i].id)
+            .then(({ data }) => {
+              if (data.msg != "success") {
+                throw new Error("ERROR");
+              }
+            })
+            .catch(({ response }) => {
+              console.log(response);
+            });
+        }
       }
     };
 
@@ -641,10 +748,19 @@ export default defineComponent({
             : undefined,
           detail: method_list[i].detail,
           paper_id: item.id,
-          is_active: 1,
         };
 
-        await ApiService.post("method-list/", data_method_list_item)
+        let api = {
+          type: "post",
+          url: "method-list/",
+        };
+
+        if (data_method_list_item.id != null) {
+          api.type = "put";
+          api.url = "method-list/" + data_method_list_item.id;
+        }
+
+        await ApiService[api.type](api.url, data_method_list_item)
           .then(({ data }) => {
             if (data.msg != "success") {
               throw new Error("ERROR");
@@ -653,6 +769,25 @@ export default defineComponent({
           .catch(({ response }) => {
             console.log(response);
           });
+      }
+
+      //   old
+      for (let i = 0; i < method_list_old.length; i++) {
+        let check = method_list.find((x: any) => {
+          return x.id == method_list_old[i].id;
+        });
+
+        if (!check) {
+          await ApiService.delete("method_list/" + method_list_old[i].id)
+            .then(({ data }) => {
+              if (data.msg != "success") {
+                throw new Error("ERROR");
+              }
+            })
+            .catch(({ response }) => {
+              console.log(response);
+            });
+        }
       }
     };
 
@@ -663,10 +798,19 @@ export default defineComponent({
           detail: budget[i].detail,
           amount: budget[i].amount,
           paper_id: item.id,
-          is_active: 1,
         };
 
-        await ApiService.post("budget/", data_budget_item)
+        let api = {
+          type: "post",
+          url: "budget/",
+        };
+
+        if (data_budget_item.id != null) {
+          api.type = "put";
+          api.url = "budget/" + data_budget_item.id;
+        }
+
+        await ApiService[api.type](api.url, data_budget_item)
           .then(({ data }) => {
             if (data.msg != "success") {
               throw new Error("ERROR");
@@ -675,6 +819,25 @@ export default defineComponent({
           .catch(({ response }) => {
             console.log(response);
           });
+      }
+
+      //   old
+      for (let i = 0; i < budget_old.length; i++) {
+        let check = budget.find((x: any) => {
+          return x.id == budget_old[i].id;
+        });
+
+        if (!check) {
+          await ApiService.delete("budget/" + budget_old[i].id)
+            .then(({ data }) => {
+              if (data.msg != "success") {
+                throw new Error("ERROR");
+              }
+            })
+            .catch(({ response }) => {
+              console.log(response);
+            });
+        }
       }
     };
 
@@ -685,10 +848,19 @@ export default defineComponent({
           detail: budget2[i].detail,
           amount: budget2[i].amount,
           paper_id: item.id,
-          is_active: 1,
         };
 
-        await ApiService.post("budget2/", data_budget_item)
+        let api = {
+          type: "post",
+          url: "budget2/",
+        };
+
+        if (data_budget_item.id != null) {
+          api.type = "put";
+          api.url = "budget2/" + data_budget_item.id;
+        }
+
+        await ApiService[api.type](api.url, data_budget_item)
           .then(({ data }) => {
             if (data.msg != "success") {
               throw new Error("ERROR");
@@ -697,6 +869,25 @@ export default defineComponent({
           .catch(({ response }) => {
             console.log(response);
           });
+      }
+
+      //   old
+      for (let i = 0; i < budget2_old.length; i++) {
+        let check = budget2.find((x: any) => {
+          return x.id == budget2_old[i].id;
+        });
+
+        if (!check) {
+          await ApiService.delete("budget2/" + budget2_old[i].id)
+            .then(({ data }) => {
+              if (data.msg != "success") {
+                throw new Error("ERROR");
+              }
+            })
+            .catch(({ response }) => {
+              console.log(response);
+            });
+        }
       }
     };
 
@@ -707,10 +898,19 @@ export default defineComponent({
           detail: budget3[i].detail,
           amount: budget3[i].amount,
           paper_id: item.id,
-          is_active: 1,
         };
 
-        await ApiService.post("budget3/", data_budget_item)
+        let api = {
+          type: "post",
+          url: "budget3/",
+        };
+
+        if (data_budget_item.id != null) {
+          api.type = "put";
+          api.url = "budget3/" + data_budget_item.id;
+        }
+
+        await ApiService[api.type](api.url, data_budget_item)
           .then(({ data }) => {
             if (data.msg != "success") {
               throw new Error("ERROR");
@@ -720,18 +920,33 @@ export default defineComponent({
             console.log(response);
           });
       }
+
+      //   old
+      for (let i = 0; i < budget3_old.length; i++) {
+        let check = budget3.find((x: any) => {
+          return x.id == budget3_old[i].id;
+        });
+
+        if (!check) {
+          await ApiService.delete("budget3/" + budget3_old[i].id)
+            .then(({ data }) => {
+              if (data.msg != "success") {
+                throw new Error("ERROR");
+              }
+            })
+            .catch(({ response }) => {
+              console.log(response);
+            });
+        }
+      }
     };
 
     onMounted(async () => {
       await fetchUser();
-      if (
-        user_item.prefix_name == "" ||
-        user_item.firstname == "" ||
-        user_item.surname == "" ||
-        user_item.email == "" ||
-        user_item.department_id == null
-      ) {
-        useToast("โปรดระบุข้อมูลส่วนตัวให้ครบถ้วน", "error");
+      await fetchItem();
+
+      if (userData.data.level != 1) {
+        useToast("คุณไม่สามารถแก้ไขข้อมูลของบุคคลอื่นได้", "error");
         router.push({ name: "paper" });
         return;
       }
@@ -768,7 +983,7 @@ export default defineComponent({
 </script>
 
 <style>
-/* .fr-wrapper > div:first-child {
-  display: none;
-} */
+.vs--searchable .vs__dropdown-toggle {
+  border: none;
+}
 </style>

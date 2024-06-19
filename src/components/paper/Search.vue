@@ -165,10 +165,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.form-control {
-  border-color: #ffc600;
-  border-width: 0.1em;
-}
-</style>

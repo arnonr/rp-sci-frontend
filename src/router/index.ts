@@ -81,6 +81,23 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "แบบฟอร์มเสนอโครงการวิจัย",
         },
       },
+
+      {
+        path: "/admin-paper",
+        name: "admin-paper",
+        component: () => import("@/views/admin-paper/Index.vue"),
+        meta: {
+          pageTitle: "รายการเสนอโครงการวิจัย",
+        },
+      },
+      {
+        path: "/admin-paper-edit/:id",
+        name: "admin-paper-edit",
+        component: () => import("@/views/admin-paper/Edit.vue"),
+        meta: {
+          pageTitle: "แก้ไขโครงการวิจัย",
+        },
+      },
       {
         path: "/new-complaint",
         name: "new-complaint",

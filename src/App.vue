@@ -129,4 +129,12 @@ export default defineComponent({
 .modal-content {
   background-color: #d9f4fe;
 }
+
+.form-control {
+  border-color: #ffc600;
+  border-width: 0.1em;
+}
+.vs--searchable .vs__dropdown-toggle {
+  border: none;
+}
 </style>

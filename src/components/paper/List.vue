@@ -70,7 +70,7 @@
                 <li>
                   <a
                     class="dropdown-item cursor-pointer"
-                    v-if="it.status_id != 2 && it.status_id != 4"
+                    v-if="(it.status_id != 2 && it.status_id != 4 )|| userData.data.level"
                     @click="
                       handleEdit({
                         id: it.id,
@@ -152,6 +152,7 @@ export default defineComponent({
     const internalCurrentPage = ref(paginationData.value.currentPage);
     const internalPerPage = ref(paginationData.value.perPage);
     let { statuses } = useStatusData();
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     const headerColumn = [
       { column_name: "created_at", title: "วันที่เสนอ", sort: true },
@@ -176,7 +177,6 @@ export default defineComponent({
     const handleSort = (key: any) => {
       emit("sort", key);
     };
-
 
     const convertStatus = (status: any) => {
       const findStatus = statuses.find((x: any) => x.id === status);
@@ -212,6 +212,7 @@ export default defineComponent({
       getSortIcon,
       handleSort,
       headerColumn,
+      userData,
     };
   },
 });

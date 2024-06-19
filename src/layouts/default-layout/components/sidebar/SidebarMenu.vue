@@ -31,9 +31,8 @@
             <template
               v-if="
                 menuItem.heading &&
-                ((menuItem.route == '/new-complaint' &&
-                  (userData.role_id == 1 || userData.role_id == 2)) ||
-                  menuItem.route != '/new-complaint')
+                ((menuItem.route == '/admin-paper' && userData.data.level == 1) ||
+                  menuItem.route != '/admin-paper')
               "
             >
               <div class="menu-item">
@@ -157,7 +156,6 @@
           </template>
         </template>
 
-       
         <!--end:Menu item-->
       </div>
       <!--end::Menu-->

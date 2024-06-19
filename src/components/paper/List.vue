@@ -81,10 +81,7 @@
                 <li>
                   <a
                     class="dropdown-item cursor-pointer"
-                    v-if="
-                      (it.status_id != 2 && it.status_id != 4) ||
-                      userData.data.level
-                    "
+                    v-if="it.status_id == 1 || it.status_id == 3"
                     @click="
                       handleEdit({
                         id: it.id,

@@ -115,6 +115,8 @@ import useStateData from "@/composables/useStateData";
 
 import ApiService from "@/core/services/ApiService";
 
+import useDateData from "@/composables/useDateData";
+
 export default defineComponent({
   name: "list-complaint-2",
   components: {
@@ -210,10 +212,6 @@ export default defineComponent({
       emit("returnReport2", item);
     };
 
-    const convertDate = (date: any) => {
-      return dayjs(date).locale("th").format("DD MMM BBBB");
-    };
-
     const convertState = (state: any) => {
       const findState = states.find((x: any) => x.id === state);
       return {
@@ -279,7 +277,7 @@ export default defineComponent({
       handleReceive2,
       handleSend2,
       handleReceive3,
-      convertDate,
+      convertDate: useDateData().convertDate,
       convertState,
       convertAccused,
       convertDueDate,

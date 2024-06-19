@@ -119,8 +119,9 @@ dayjs.extend(buddhistEra);
 
 // Import Pagination
 import BlogPagination from "@/components/common/pagination/BlogPagination.vue";
-
+// Composable
 import useStatusData from "@/composables/useStatusData";
+import useDateData from "@/composables/useDateData";
 
 export default defineComponent({
   name: "list-complaint",
@@ -176,9 +177,6 @@ export default defineComponent({
       emit("sort", key);
     };
 
-    const convertDate = (date: any) => {
-      return dayjs(date).locale("th").format("DD MMM BBBB");
-    };
 
     const convertStatus = (status: any) => {
       const findStatus = statuses.find((x: any) => x.id === status);
@@ -207,7 +205,7 @@ export default defineComponent({
       items,
       handleDetail,
       handleEdit,
-      convertDate,
+      convertDate: useDateData().convertDate,
       convertStatus,
       updateCurrentPage,
       updatePerPage,

@@ -68,6 +68,8 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, toRefs } from "vue";
+// Composable
+import useDateData from "@/composables/useDateData";
 
 export default defineComponent({
   name: "paper-pdf-detail-section2",
@@ -94,10 +96,13 @@ export default defineComponent({
     // Mounted
     onMounted(async () => {});
 
+  
+
     // Watch
     // Return
     return {
       item,
+      convertDate: useDateData().convertDate,
     };
   },
 });

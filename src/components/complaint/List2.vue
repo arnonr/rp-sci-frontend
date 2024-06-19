@@ -260,6 +260,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs, ref } from "vue";
+import ApiService from "@/core/services/ApiService";
 
 // Import Dayjs
 import dayjs from "dayjs";
@@ -270,9 +271,10 @@ dayjs.extend(buddhistEra);
 // Import Pagination
 import BlogPagination from "@/components/common/pagination/BlogPagination.vue";
 
+// Composable
 import useStateData from "@/composables/useStateData";
+import useDateData from "@/composables/useDateData";
 
-import ApiService from "@/core/services/ApiService";
 
 export default defineComponent({
   name: "list-complaint-2",
@@ -369,10 +371,6 @@ export default defineComponent({
       emit("returnReport2", item);
     };
 
-    const convertDate = (date: any) => {
-      return dayjs(date).locale("th").format("DD MMM BBBB");
-    };
-
     const convertState = (state: any) => {
       const findState = states.find((x: any) => x.id === state);
       return {
@@ -438,7 +436,7 @@ export default defineComponent({
       handleReceive2,
       handleSend2,
       handleReceive3,
-      convertDate,
+      convertDate: useDateData().convertDate,
       convertState,
       convertAccused,
       convertDueDate,

@@ -650,7 +650,7 @@ export default defineComponent({
     // Uppy
     const uppy = new Uppy({
       meta: {
-        paper_id: null,
+        paper_id: props.item.id,
         secret_key: props.r,
         id: null,
         table_name: "paper",
@@ -705,6 +705,45 @@ export default defineComponent({
       researcher_types: useBasicData().researcher_types,
     });
 
+    // fetch
+    const fetchFileAttach = async () => {
+      const { data } = await ApiService.query("file-attach", {
+        params: { paper_id: props.item.id, perPage: 100 },
+      });
+
+      //
+      for (let i = 0; i < data.data.length; i++) {
+        await fetch(data.data[i].filename)
+          .then((response) => response.blob())
+          .then((blob) => {
+            if (blob.type != "text/html") {
+              uppy.addFile({
+                name: undefined,
+                type: blob.type,
+                data: blob,
+                meta: {
+                  relativePath: data.data[i].filename,
+                  paper_id: data.data[i].paper_id,
+                  id: data.data[i].id,
+                  secret_key: data.data[i].secret_key,
+                  isRemote: true,
+                },
+                source: "Local",
+                isRemote: false,
+              });
+            }
+          });
+      }
+      //
+
+      //
+      uppy.getFiles().forEach((file) => {
+        uppy.setFileState(file.id, {
+          progress: { uploadComplete: true, uploadStarted: true },
+        });
+      });
+    };
+
     // Event
     const onTab2Validate = async () => {
       return true;
@@ -716,6 +755,7 @@ export default defineComponent({
         is_active: 1,
         perPage: 500,
       });
+      fetchFileAttach();
     });
 
     const onIncreaseBudget = (type: any) => {

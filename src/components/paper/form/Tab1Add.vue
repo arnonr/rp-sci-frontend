@@ -279,7 +279,11 @@ export default defineComponent({
         perPage: 500,
       });
 
-      tags.value = [];
+      if (item.value.keyword != null && item.value.keyword != "") {
+        tags.value = item.value.keyword.split(",");
+      } else {
+        tags.value = [];
+      }
     });
 
     // Return

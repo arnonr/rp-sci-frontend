@@ -77,6 +77,9 @@ import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 dayjs.extend(buddhistEra);
 
+// Composable
+import useDateData from "@/composables/useDateData";
+
 export default defineComponent({
   name: "paper-detail-section2",
   props: {
@@ -110,7 +113,7 @@ export default defineComponent({
     // Return
     return {
       item,
-      convertDate,
+      convertDate: useDateData().convertDate,
     };
   },
 });

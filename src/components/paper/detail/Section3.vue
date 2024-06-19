@@ -14,8 +14,8 @@
           <div class="separator separator-dotted my-2"></div>
         </div>
         <div class="col-md-3 mt-5">
-          <span>จำนวนเงิน </span>
-          <span class="fst-italic fw-bold"
+          <span class="fw-bold">จำนวนเงิน : </span>
+          <span class="fst-italic"
             >{{
               Number(bg.amount).toLocaleString("en-US", {
                 minimumFractionDigits: 2,

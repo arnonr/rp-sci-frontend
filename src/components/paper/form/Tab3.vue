@@ -277,6 +277,10 @@ dayjs.extend(buddhistEra);
 // Import FormWizard
 import { TabContent } from "vue3-form-wizard";
 
+
+// Composable
+import useDateData from "@/composables/useDateData";
+
 export default defineComponent({
   name: "complaint-form-tab3",
   props: {
@@ -330,9 +334,9 @@ export default defineComponent({
     // Fetch
     const fetchFileAttach = async () => {
       try {
-        let params = props.r
-          ? { secret_key: props.r }
-          : { paper_id: item.value.id };
+        let params = item.value.id 
+          ? { paper_id: item.value.id }
+          : { secret_key: props.r };
 
         const { data } = await ApiService.query("file-attach/", {
           params: { ...params },
@@ -368,22 +372,17 @@ export default defineComponent({
     watch(
       () => tab_index.value,
       () => {
+        console.log("FREEDOM")
         beforeShowTab();
       }
     );
     // onCalulate
-    const convertDate = (date: any) => {
-      if (!date) {
-        return "";
-      }
-      return dayjs(date).locale("th").format("DD MMM BBBB");
-    };
 
     // Return
     return {
       selectOptions,
       new_item,
-      convertDate,
+      convertDate: useDateData().convertDate,
       file_attach,
     };
   },

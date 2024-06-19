@@ -581,6 +581,7 @@ export default defineComponent({
         sended_user_id: userData.data.id,
         user_id: userData.data.id,
         is_send: is_send,
+        is_active: 1,
       };
 
       if (is_send == 1) {
@@ -613,6 +614,7 @@ export default defineComponent({
           researcher_type: researcher[i].researcher_type?.id,
           percentage: researcher[i].percentage,
           paper_id: item.id,
+          is_active: 1,
         };
 
         await ApiService.post("researcher/", data_researcher_item)
@@ -639,6 +641,7 @@ export default defineComponent({
             : undefined,
           detail: method_list[i].detail,
           paper_id: item.id,
+          is_active: 1,
         };
 
         await ApiService.post("method-list/", data_method_list_item)
@@ -660,6 +663,7 @@ export default defineComponent({
           detail: budget[i].detail,
           amount: budget[i].amount,
           paper_id: item.id,
+          is_active: 1,
         };
 
         await ApiService.post("budget/", data_budget_item)
@@ -681,6 +685,7 @@ export default defineComponent({
           detail: budget2[i].detail,
           amount: budget2[i].amount,
           paper_id: item.id,
+          is_active: 1,
         };
 
         await ApiService.post("budget2/", data_budget_item)
@@ -702,6 +707,7 @@ export default defineComponent({
           detail: budget3[i].detail,
           amount: budget3[i].amount,
           paper_id: item.id,
+          is_active: 1,
         };
 
         await ApiService.post("budget3/", data_budget_item)

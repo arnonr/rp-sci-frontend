@@ -118,6 +118,7 @@ import Vue3Html2pdf from "vue3-html2pdf";
 // Use Composables
 import useBasicData from "@/composables/useBasicData";
 import Preloader from "@/components/preloader/Preloader.vue";
+import useDateData from "@/composables/useDateData";
 
 // Import Component
 import Section1 from "@/components/paper/detail/Section1.vue";
@@ -292,19 +293,11 @@ export default defineComponent({
       mainModalObj.value.hide();
       emit("close-modal");
     });
-
-    const convertDate = (date: any) => {
-      if (!date) {
-        return "";
-      }
-      return dayjs(date).locale("th").format("DD MMM BBBB");
-    };
-
     // Return
     return {
       isLoading,
       mainModalRef,
-      convertDate,
+      convertDate: useDateData().convertDate,
       item,
       file_attach,
       onClose,

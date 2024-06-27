@@ -259,6 +259,7 @@
 
     <div>
       <AddReviewerPage
+        :paper_id="item.id"
         v-if="openAddReviewerModal"
         @reload="onReLoadReviewer"
         @close-modal="openAddReviewerModal = false"

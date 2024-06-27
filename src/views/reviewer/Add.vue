@@ -75,16 +75,16 @@
           </div>
           <div class="row">
             <div class="mx-auto text-center mt-5">
-              <button
+              <!-- <button
                 @click="onClose"
                 type="button"
                 class="btn btn-danger me-2"
               >
                 ปิด
-              </button>
-              <button @click="onSubmit" type="button" class="btn btn-success">
+              </button> -->
+              <!-- <button @click="onSubmit" type="button" class="btn btn-success">
                 ยืนยัน
-              </button>
+              </button> -->
             </div>
           </div>
         </div>

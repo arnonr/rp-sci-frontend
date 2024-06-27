@@ -22,11 +22,11 @@
           @sort="(key: any) => {
             sortedItems(key)}"
           @edit="(it: any) => {goToEditPage(it.id)}"
-          @reject="(it: any) => {item={...it}; openRejectModal = true;}"
-          @approve="(it: any) => { item={...it};  openApproveModal = true}"
-          @cancel="(it: any) =>{item={...it};  openCancelModal = true}"
-          @history-detail="(it: any) =>{item={...it};  openHistoryDetailModal = true}"
-          @manage-review="(it: any) =>{ item={...it}; openManageReviewModal = true}"
+          @reject="(it: any) => { Object.assign(item, it); openRejectModal = true;}"
+          @approve="(it: any) => { Object.assign(item, it);  openApproveModal = true}"
+          @cancel="(it: any) =>{ Object.assign(item, it);  openCancelModal = true}"
+          @history-detail="(it: any) =>{ Object.assign(item, it); openHistoryDetailModal = true}"
+          @manage-review="(it: any) =>{  Object.assign(item, it); openManageReviewModal = true}"
           @detail="
             (it: any) => {
               Object.assign(item, it);
@@ -90,24 +90,10 @@
         />
       </div>
 
-      <!--
-      <div id="cancel-modal">
-        <CancelPaperPage
-          v-if="openCancelModal == true"
-          :id="user_item.id"
-          @close-modal="
-            () => {
-              openCancelModal = false;
-            }
-          "
-          @reload="fetchItems"
-        />
-      </div>
-
       <div id="manage-review-modal">
         <ManageReviewPaperPage
           v-if="openManageReviewModal == true"
-          :id="user_item.id"
+          :item="item"
           @close-modal="
             () => {
               openManageReviewModal = false;
@@ -115,7 +101,7 @@
           "
           @reload="fetchItems"
         />
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -131,9 +117,8 @@ import ListComponent from "@/components/paper/AdminList.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
 import DetailPage from "@/views/paper/DetailModal.vue";
 import RejectPaperPage from "@/views/admin-paper/RejectModal.vue";
-// import CancelPaperPage from "@/views/admin-paper/CancelModal.vue";
 import ApprovePaperPage from "@/views/admin-paper/ApproveModal.vue";
-// import ManageReviewPaperPage from "@/views/admin-paper/ManageReviewModal.vue";
+import ManageReviewPaperPage from "@/views/admin-paper/ManageReviewModal.vue";
 import HistoryDetailPage from "@/views/paper/HistoryDetailModal.vue";
 
 export default defineComponent({
@@ -144,9 +129,8 @@ export default defineComponent({
     Preloader,
     DetailPage,
     RejectPaperPage,
-    // CancelPaperPage,
     ApprovePaperPage,
-    // ManageReviewPaperPage,
+    ManageReviewPaperPage,
     HistoryDetailPage,
   },
   setup() {

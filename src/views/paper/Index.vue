@@ -63,13 +63,8 @@
           @sort="(key: any) => {
             sortedItems(key)}"
           @edit="(it: any) => {goToEditPage(it.id)}"
-          @detail="
-            (it: any) => {
-              Object.assign(item, it);
-              openDetailModal = true;
-            }
-          "
-          @history-detail="(it: any) =>{item={...it};  openHistoryDetailModal = true}"
+          @detail="(it: any) => {onDetailModal(it) }"
+          @history-detail="(it: any) =>{ onHistoryDetailModal(it)}"
         />
       </div>
     </div>
@@ -101,12 +96,11 @@
         />
       </div>
 
-      <!-- Modal Reject Detail ดูข้อมูลประวัติการแก้ไข -->
+      <!-- Modal History Detail ดูข้อมูลประวัติการแก้ไข -->
       <div id="history-detail-modal">
         <HistoryDetailPage
           v-if="openHistoryDetailModal == true"
           :paper_id="item.id"
-          :item="item"
           @close-modal="
             () => {
               openHistoryDetailModal = false;
@@ -236,10 +230,16 @@ export default defineComponent({
 
     const onDetailModal = (it: any) => {
       Object.assign(item, it);
+      openDetailModal.value = true;
     };
 
     const onEditUserModal = () => {
       openEditUserModal.value = true;
+    };
+
+    const onHistoryDetailModal = (it: any) => {
+      Object.assign(item, it);
+      openHistoryDetailModal.value = true;
     };
 
     // Mounted
@@ -326,6 +326,7 @@ export default defineComponent({
       sortOrder,
       sortedItems,
       openHistoryDetailModal,
+      onHistoryDetailModal,
     };
   },
 });

@@ -67,7 +67,7 @@
                     >รายละเอียด</a
                   >
                 </li>
-                <li v-if="it.return_paper.length != 0">
+                <li v-if="it.status_id > 1">
                   <a
                     class="dropdown-item cursor-pointer"
                     @click="

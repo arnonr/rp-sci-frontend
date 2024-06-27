@@ -81,10 +81,6 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    item: {
-      type: Object,
-      required: true,
-    },
   },
   components: {
     Preloader,
@@ -96,11 +92,12 @@ export default defineComponent({
     const mainModalObj = ref<any>(null);
 
     // Variable
-    const { item, paper_id } = toRefs(props);
+    const { paper_id } = toRefs(props);
 
     const history_items = ref<any>([]);
 
     const items = reactive<any>([]);
+    const item = reactive<any>([]);
 
     const fetchItems = async () => {
       try {
@@ -114,6 +111,38 @@ export default defineComponent({
             status_name: "ส่งกลับให้แก้ไข",
             detail: el.detail,
           });
+        });
+        if (item.value.status_id == 4 || item.value.status_id == 5) {
+          history_items.value.push({
+            date_at: item.value.approved_at,
+            status_name: item.value.status_id == 5 ? "ตอบรับข้อเสนอ" : "ยกเลิก",
+            detail: item.value.approved_detail,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchItem = async () => {
+      try {
+        const { data } = await ApiService.query("paper/" + paper_id.value, {});
+        Object.assign(item, {
+          ...data.data,
+          department_id:
+            data.data.department_id != null
+              ? {
+                  name: data.data.department.name,
+                  id: data.data.department_id,
+                }
+              : null,
+          paper_type_id:
+            data.data.paper_type_id != null
+              ? {
+                  name: data.data.paper_type.name,
+                  id: data.data.paper_type_id,
+                }
+              : null,
         });
       } catch (error) {
         console.log(error);
@@ -136,6 +165,7 @@ export default defineComponent({
       mainModalRef.value.addEventListener("hidden.bs.modal", () =>
         onClose({ reload: false })
       );
+      await fetchItem();
       await fetchItems();
 
       // ทำ Log ไว้ดีกว่า
@@ -171,6 +201,7 @@ export default defineComponent({
       convertDate: useDateData().convertDate,
       onClose,
       history_items,
+      item,
     };
   },
 });

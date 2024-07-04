@@ -58,7 +58,7 @@
           <router-link to="/" class="d-lg-none">
             <img
               alt="Logo"
-              :src="getAssetPath('media/logos/logo-sci.jpeg')"
+              :src="getAssetPath('media/logos/logo-sci.png')"
               class="h-30px"
             />
           </router-link>
@@ -72,7 +72,7 @@
       >
         <div>
           <div class="d-inline-block align-top mt-2">
-            <img src="/media/logos/logo-sci.jpeg" alt="" style="width: 70px" />
+            <img src="/media/logos/logo-sci.png" alt="" style="width: 80px" />
           </div>
           <div class="d-inline-block d-none d-lg-inline-block">
             <h2 class="ms-5 mt-7 text-white">ระบบเสนอโครงการวิจัย</h2>

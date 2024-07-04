@@ -9,7 +9,7 @@
             :to="menuItem.route"
             active-class="active"
           >
-            <span class="menu-title">{{ translate(menuItem.heading) }}</span>
+            <span class="menu-title">{{ translate(menuItem.heading) }}</span>sss
           </router-link>
         </div>
       </template>

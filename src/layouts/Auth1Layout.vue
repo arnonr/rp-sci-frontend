@@ -6,7 +6,7 @@
         <router-link to="/" class="mb-0 mb-lg-12">
           <img
             alt="Logo"
-            :src="getAssetPath('media/logos/logo-sci.jpeg')"
+            :src="getAssetPath('media/logos/logo-sci.png')"
             class="mx-auto"
             style="width: 10rem"
           />

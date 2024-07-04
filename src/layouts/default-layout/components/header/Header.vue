@@ -51,7 +51,7 @@
           <router-link to="/" class="d-lg-none">
             <img
               alt="Logo"
-              :src="getAssetPath('media/logos/logo-sci.jpeg')"
+              :src="getAssetPath('media/logos/logo-sci.png')"
               class="h-30px"
             />
           </router-link>

@@ -23,13 +23,15 @@
         <div class="modal-body" v-if="!isLoading">
           <div class="form row">
             <div class="mb-7 col-12 col-lg-12">
-              <label for="firstname" class="required form-label">ชื่อ</label>
+              <label for="prefix_name" class="required form-label"
+                >คำนำหน้า</label
+              >
               <input
                 type="text"
                 class="form-control"
-                :placeholder="`ชื่อ`"
-                :aria-label="`ชื่อ`"
-                v-model="item.firstname"
+                :placeholder="`คำนำหน้า`"
+                :aria-label="`คำนำหน้า`"
+                v-model="item.prefix_name"
               />
             </div>
             <div class="mb-7 col-12 col-lg-12">
@@ -43,48 +45,50 @@
               />
             </div>
             <div class="mb-7 col-12 col-lg-12">
-              <label for="firstname" class="required form-label">ชื่อ</label>
+              <label for="surname" class="required form-label">นามสกุล</label>
               <input
                 type="text"
                 class="form-control"
-                :placeholder="`ชื่อ`"
-                :aria-label="`ชื่อ`"
-                v-model="item.firstname"
+                :placeholder="`นามสกุล`"
+                :aria-label="`นามสกุล`"
+                v-model="item.surname"
               />
             </div>
             <div class="mb-7 col-12 col-lg-12">
-              <label for="firstname" class="required form-label">ชื่อ</label>
+              <label for="organization_name" class="required form-label"
+                >หน่วยงาน</label
+              >
               <input
                 type="text"
                 class="form-control"
-                :placeholder="`ชื่อ`"
-                :aria-label="`ชื่อ`"
-                v-model="item.firstname"
+                :placeholder="`หน่วยงาน`"
+                :aria-label="`หน่วยงาน`"
+                v-model="item.organization_name"
               />
             </div>
             <div class="mb-7 col-12 col-lg-12">
-              <label for="firstname" class="required form-label">ชื่อ</label>
+              <label for="email" class="required form-label">อีเมล</label>
               <input
                 type="text"
                 class="form-control"
                 :placeholder="`email`"
-                :aria-label="`ชื่อ`"
-                v-model="item.firstname"
+                :aria-label="`email`"
+                v-model="item.email"
               />
             </div>
           </div>
           <div class="row">
             <div class="mx-auto text-center mt-5">
-              <!-- <button
-                @click="onClose"
+              <button
+                @click="onClose({ reload: false })"
                 type="button"
                 class="btn btn-danger me-2"
               >
                 ปิด
-              </button> -->
-              <!-- <button @click="onSubmit" type="button" class="btn btn-success">
+              </button>
+              <button @click="onSubmit" type="button" class="btn btn-success">
                 ยืนยัน
-              </button> -->
+              </button>
             </div>
           </div>
         </div>
@@ -141,6 +145,20 @@ export default defineComponent({
       emit("close-modal");
     };
 
+    const onSubmit = async () => {
+      await ApiService.post("reviewer/", item)
+        .then(({ data }) => {
+          if (data.msg != "success") {
+            throw new Error("ERROR");
+          }
+
+          onClose({ reload: true });
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        });
+    };
+
     // Mounted
     onMounted(async () => {
       mainModalObj.value = new Modal(mainModalRef.value, {});
@@ -167,6 +185,7 @@ export default defineComponent({
       mainModalRef,
       item,
       onClose,
+      onSubmit,
     };
   },
 });

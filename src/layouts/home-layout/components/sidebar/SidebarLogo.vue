@@ -20,7 +20,7 @@
       />
       <img
         alt="Logo"
-        :src="getAssetPath('media/logos/logo-sci.jpeg')"
+        :src="getAssetPath('media/logos/logo-sci.png')"
         class="h-20px app-sidebar-logo-minimize"
       />
     </router-link>

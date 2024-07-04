@@ -31,7 +31,8 @@
             <template
               v-if="
                 menuItem.heading &&
-                ((menuItem.route == '/admin-paper' && userData.data.level == 1) ||
+                ((menuItem.route == '/admin-paper' &&
+                  userData.data.level == 1) ||
                   menuItem.route != '/admin-paper')
               "
             >

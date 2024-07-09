@@ -137,4 +137,12 @@ export default defineComponent({
 .vs--searchable .vs__dropdown-toggle {
   border: none;
 }
+
+.fr-wrapper a[href*="froala.com/wysiwyg-editor"] {
+  display: none !important;
+}
+
+p[data-f-id="pbf"] {
+  display: none !important;
+}
 </style>

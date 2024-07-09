@@ -297,3 +297,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.fr-wrapper a[href*="froala.com/wysiwyg-editor"] {
+  display: none !important;
+}
+
+p[data-f-id="pbf"] {
+  display: none !important;
+}
+</style>

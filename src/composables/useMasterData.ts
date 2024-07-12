@@ -111,6 +111,14 @@ export default () => {
     return data.data;
   };
 
+  const fetchPaperKinds = async (params: any) => {
+    const { data } = await ApiService.query("paper-kind", {
+      params: params,
+    });
+
+    return data.data;
+  };
+
   return {
     fetchPrefixName,
     fetchState,
@@ -127,5 +135,6 @@ export default () => {
     fetchTopicType,
     fetchDepartments,
     fetchPaperTypes,
+    fetchPaperKinds,
   };
 };

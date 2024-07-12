@@ -18,6 +18,22 @@
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
+        <label for="paper_type_id" class="required form-label"
+          >ลักษณะงานวิจัย</label
+        >
+        <v-select
+          name="paper_kind_id"
+          label="name"
+          placeholder="ลักษณะงานวิจัย"
+          :options="selectOptions.paper_kinds"
+          class="form-control"
+          :clearable="false"
+          v-model="item.paper_kind_id"
+        >
+        </v-select>
+      </div>
+
+      <div class="mb-7 col-12 col-lg-12">
         <label for="title_th" class="required form-label"
           >ชื่อโครงการ ภาษาไทย</label
         >
@@ -255,6 +271,7 @@ export default defineComponent({
     const selectOptions = ref({
       departments: <any>[],
       paper_types: <any>[],
+      paper_kinds: <any>[],
     });
 
     // Event
@@ -275,6 +292,11 @@ export default defineComponent({
       });
 
       selectOptions.value.paper_types = await useMasterData().fetchPaperTypes({
+        is_active: 1,
+        perPage: 500,
+      });
+
+      selectOptions.value.paper_kinds = await useMasterData().fetchPaperKinds({
         is_active: 1,
         perPage: 500,
       });

@@ -151,6 +151,7 @@
                                       rv.review_status == 1 ? '' : 'disabled',
                                     ]"
                                     v-if="rv.reviewer_id != null"
+                                    @click="onSendMail(rv)"
                                   >
                                     <i class="fa fa-envelope"></i>
                                     <span class="ms-1">
@@ -485,6 +486,26 @@ export default defineComponent({
       useToast("บันทึกข้อมูลเสร็จสิ้น");
     };
 
+    const onSendMail = async (rv: any) => {
+      isLoading.value = true;
+      await ApiService.put("review/send-mail/" + rv.id, {
+        time_no_send_mail: rv.time_no_send_mail + 1,
+      })
+        .then(async ({ data }) => {
+          if (data.msg != "success") {
+            throw new Error("ERROR");
+          }
+          await fetchReview();
+
+          isLoading.value = false;
+          useToast("ส่งอีเมลเสร็จสิ้น");
+        })
+        .catch(({ response }) => {
+          isLoading.value = false;
+          console.log(response);
+        });
+    };
+
     // const onSubmit = async () => {
     //   isLoading.value = true;
     //   let data_item: any = {
@@ -560,6 +581,7 @@ export default defineComponent({
       selectOptions,
       openAddReviewerModal,
       onReLoadReviewer,
+      onSendMail,
     };
   },
 });

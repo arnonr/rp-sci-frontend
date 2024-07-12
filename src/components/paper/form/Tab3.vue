@@ -14,6 +14,12 @@
           </div>
 
           <div class="col-md-12">
+            <span class="fw-bold">ลักษณะงานวิจัย : </span>
+            <span class="fst-italic">{{ item.paper_kind_id?.name }}</span>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
             <span class="fw-bold">ชื่อโครงการ ภาษาไทย : </span>
             <span class="fst-italic">{{ item.title_th }}</span>
             <div class="separator separator-dotted my-2"></div>

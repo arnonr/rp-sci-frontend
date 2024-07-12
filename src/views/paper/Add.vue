@@ -154,6 +154,7 @@ export default defineComponent({
       keyword: "",
       department_id: null,
       paper_type_id: null,
+      paper_kind_id: null,
       history: "",
       objective: "",
       scope: "",
@@ -249,6 +250,9 @@ export default defineComponent({
       paper_type_id: Yup.object()
         .required("${path} จำเป็นต้องระบุ")
         .label("ประเภทงานวิจัย"),
+      paper_kind_id: Yup.object()
+        .required("${path} จำเป็นต้องระบุ")
+        .label("ลักษณะงานวิจัย"),
       title_th: Yup.string()
         .required("${path} จำเป็นต้องระบุ")
         .label("ชื่อโครงการ ภาษาไทย"),
@@ -314,6 +318,7 @@ export default defineComponent({
     // errors
     const errors_default = {
       paper_type_id: { error: 0, text: "" },
+      paper_kind_id: { error: 0, text: "" },
       title_th: { error: 0, text: "" },
       title_en: { error: 0, text: "" },
       abstract: { error: 0, text: "" },
@@ -568,6 +573,7 @@ export default defineComponent({
         keyword: item.keyword,
         department_id: item.department_id?.id,
         paper_type_id: item.paper_type_id?.id,
+        paper_kind_id: item.paper_kind_id?.id,
         history: item.history,
         objective: item.objective,
         scope: item.scope,

@@ -22,9 +22,33 @@
         <div class="modal-body" v-if="!isLoading">
           <div class="row">
             <table
-              v-if="history_items.length != 0"
+              v-if="item"
               class="table table-bordered table-striped bg-sky"
             >
+              <thead class="bg-yellow">
+                <tr>
+                  <th class="text-center">วันที่</th>
+                  <th class="text-center">การดำเนินการ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">{{ convertDate(item.sended_at) }}</td>
+                  <td class="text-center">ส่งข้อเสนอโครงการ</td>
+                </tr>
+                <tr v-if="item.approved_at">
+                  <td class="text-center">
+                    {{ convertDate(item.approved_at) }}
+                  </td>
+                  <td class="text-center">พิจารณาข้อเสนอ</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="mt-6 mb-6">รายละเอียดที่ต้องแก้ไข</h3>
+          <div class="row">
+            <table class="table table-bordered table-striped bg-sky">
               <thead class="bg-yellow">
                 <tr>
                   <th class="text-center">วันที่</th>
@@ -32,16 +56,21 @@
                   <th class="text-center">รายละเอียด</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-if="history_items.length != 0">
                 <tr v-for="(it, idx) in history_items" :key="idx">
                   <td class="text-center">{{ convertDate(it.date_at) }}</td>
                   <td class="text-center">{{ it.status_name }}</td>
                   <td>{{ it.detail }}</td>
                 </tr>
               </tbody>
+              <tbody v-else>
+                <tr>
+                    <td colspan="3" class="text-center">ไม่พบการส่งกลับให้แก้ไข</td>
+                </tr>
+              </tbody>
             </table>
           </div>
-          <div class="text-center">
+          <div class="text-center mt-6">
             <button
               @click="onClose({ reload: false })"
               type="button"
@@ -104,6 +133,7 @@ export default defineComponent({
         const { data } = await ApiService.query("return-paper/", {
           params: { paper_id: paper_id.value, perPage: 100 },
         });
+
         Object.assign(items, data.data);
         items.forEach((el: any) => {
           history_items.value.push({
@@ -112,11 +142,12 @@ export default defineComponent({
             detail: el.detail,
           });
         });
-        if (item.value.status_id == 4 || item.value.status_id == 5) {
+
+        if (item.status_id == 4 || item.status_id == 5) {
           history_items.value.push({
-            date_at: item.value.approved_at,
-            status_name: item.value.status_id == 5 ? "ตอบรับข้อเสนอ" : "ยกเลิก",
-            detail: item.value.approved_detail,
+            date_at: item.approved_at,
+            status_name: item.status_id == 5 ? "ตอบรับข้อเสนอ" : "ยกเลิก",
+            detail: item.approved_detail,
           });
         }
       } catch (error) {

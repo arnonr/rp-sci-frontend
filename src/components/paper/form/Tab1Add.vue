@@ -319,3 +319,21 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.fr-toolbar {
+  border: 1px solid #ffc600;
+}
+
+.fr-box.fr-basic .fr-wrapper {
+  border: 1px solid #ffc600;
+}
+
+.fr-second-toolbar {
+  border: 1px solid #ffc600;
+}
+
+.v3ti {
+  border: 1px solid #ffc600 !important;
+}
+</style>

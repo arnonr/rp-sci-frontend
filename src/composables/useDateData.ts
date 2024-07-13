@@ -6,6 +6,7 @@ dayjs.extend(buddhistEra);
 
 export default () => {
   const convertDate = (date: any) => {
+    if (!date) return "";
     return dayjs(date).locale("th").format("DD MMM BBBB");
   };
 

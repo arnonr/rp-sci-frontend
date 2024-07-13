@@ -51,6 +51,13 @@
                     >
                       พิมพ์ข้อมูลส่วนบุคคล
                     </button>
+                    <!-- <button
+                      @click="generateMemorandumPDF"
+                      type="button"
+                      class="btn btn-success"
+                    >
+                      พิมพ์บันทึกข้อความ
+                    </button> -->
                   </div>
                 </div>
               </div>
@@ -197,6 +204,10 @@ export default defineComponent({
 
     const generatePDF = () => {
       html2Pdf.value.generatePdf();
+    };
+
+    const generateMemorandumPDF = () => {
+      html2Pdf.value.generateMemorandumPDF();
     };
 
     // Fetch
@@ -378,6 +389,7 @@ export default defineComponent({
       new_item,
       onClose,
       generatePDF,
+      l;\,
       html2Pdf,
     };
   },

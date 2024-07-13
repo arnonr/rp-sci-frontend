@@ -22,12 +22,10 @@
       <div class="card-body row">
         <div class="col-md-12">
           <span class="fw-bold">ชื่อ-นามสกุล : </span>
-          <span class="fst-italic">{{
-            user_item.prefix_name +
-            user_item.firstname +
-            " " +
-            user_item.surname
-          }}</span>
+          <span class="fst-italic"
+            >{{ user_item.prefix_name != null ? user_item.prefix_name : ""
+            }}{{ user_item.firstname + " " + user_item.surname }}</span
+          >
           <div class="separator separator-dotted my-2"></div>
         </div>
         <div class="col-md-12">

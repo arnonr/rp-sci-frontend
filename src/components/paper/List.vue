@@ -23,7 +23,7 @@
       <tbody v-if="items.length != 0">
         <tr v-for="(it, idx) in items" :key="idx">
           <td class="text-center">
-            {{ convertDate(it.created_at) }}
+            {{ convertDate(it.sended_at) }}
           </td>
           <td class="text-center">{{ it.rp_no }}</td>
 
@@ -166,7 +166,7 @@ export default defineComponent({
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     const headerColumn = [
-      { column_name: "created_at", title: "วันที่เสนอ", sort: true },
+      { column_name: "sended_at", title: "วันที่เสนอ", sort: true },
       { column_name: "rp_no", title: "รหัส", sort: true },
       { column_name: "title_th", title: "ชื่อโครงการ (TH)", sort: true },
       { column_name: "department_id", title: "หน่วยงาน", sort: true },

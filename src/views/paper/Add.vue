@@ -396,7 +396,6 @@ export default defineComponent({
     };
 
     // Event
-
     const onPaperValidate = async () => {
       Object.assign(errors, {
         ...errors_default,
@@ -588,6 +587,7 @@ export default defineComponent({
         user_id: userData.data.id,
         is_send: is_send,
         is_active: 1,
+        secret_key: r,
       };
 
       if (is_send == 1) {

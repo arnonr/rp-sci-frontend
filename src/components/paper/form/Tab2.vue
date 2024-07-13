@@ -707,6 +707,7 @@ export default defineComponent({
 
     // fetch
     const fetchFileAttach = async () => {
+      if (props.item.id == undefined) return;
       const { data } = await ApiService.query("file-attach", {
         params: { paper_id: props.item.id, perPage: 100 },
       });
@@ -853,5 +854,17 @@ export default defineComponent({
 
 p[data-f-id="pbf"] {
   display: none !important;
+}
+
+.fr-toolbar {
+  border: 1px solid #ffc600;
+}
+
+.fr-box.fr-basic .fr-wrapper {
+  border: 1px solid #ffc600;
+}
+
+.fr-second-toolbar {
+  border: 1px solid #ffc600;
 }
 </style>

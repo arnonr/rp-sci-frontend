@@ -48,6 +48,15 @@
               >
                 พิมพ์ข้อมูล
               </button>
+
+              <button
+                @click="generatePDF"
+                type="button"
+                class="btn btn-primary ms-2"
+                v-if="item.status_id != 1"
+              >
+                พิมพ์บันทึกข้อความ
+              </button>
             </div>
           </div>
         </div>
@@ -259,6 +268,13 @@ export default defineComponent({
                   id: data.data.paper_type_id,
                 }
               : null,
+          paper_kind_id:
+            data.data.paper_kind_id != null
+              ? {
+                  name: data.data.paper_kind.name,
+                  id: data.data.paper_kind_id,
+                }
+              : null,
         });
 
         budget.length = 0;
@@ -373,11 +389,9 @@ export default defineComponent({
 </style>
 
 <style>
-
 .generate-pdf {
-  padding: 0mm 10mm 0mm 10mm; 
+  padding: 0mm 10mm 0mm 10mm;
 }
-
 
 .html2pdf__page-break {
   page-break-before: always; /* บังคับให้เริ่มหน้าใหม่ */

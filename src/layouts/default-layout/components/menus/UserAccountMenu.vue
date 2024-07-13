@@ -9,21 +9,29 @@
       <div class="menu-content d-flex align-items-center px-3">
         <!--begin::Avatar-->
         <div class="symbol symbol-50px me-5">
-          <img alt="Logo" :src="getAssetPath('media/avatars/300-3.jpg')" />
+          <img alt="Logo" :src="getAssetPath('media/avatars/blank.png')" />
         </div>
         <!--end::Avatar-->
 
         <!--begin::Username-->
         <div class="d-flex flex-column">
           <div class="fw-bold d-flex align-items-center fs-5">
-            อานนท์
-            <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
-              >กองตรวจราชการ</span
+            {{
+              userData.data.prefix_name +
+              userData.data.firstname +
+              " " +
+              userData.data.surname
+            }}
+          </div>
+          <div class="fw-bold d-flex align-items-center fs-5">
+            <span
+              class="badge badge-light-success fw-bold fs-8 px-2 py-1 mb-2 mt-2"
+              >{{ userData.data.department?.name }}</span
             >
           </div>
-          <a href="#" class="fw-semibold text-muted text-hover-primary fs-7"
-            >arnon.r@tgde.kmutnb.ac.th</a
-          >
+          <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{
+            userData.data.email
+          }}</a>
         </div>
         <!--end::Username-->
       </div>
@@ -35,24 +43,24 @@
     <!--end::Menu separator-->
 
     <!--begin::Menu item-->
-    <div class="menu-item px-5">
+    <!-- <div class="menu-item px-5">
       <router-link to="/pages/profile/overview" class="menu-link px-5">
         My Profile
       </router-link>
-    </div>
+    </div> -->
     <!--end::Menu item-->
-    
+
     <!--begin::Menu item-->
-    <div class="menu-item px-5 my-1">
+    <!-- <div class="menu-item px-5 my-1">
       <router-link to="/pages/profile/overview" class="menu-link px-5">
         Account Settings
       </router-link>
-    </div>
+    </div> -->
     <!--end::Menu item-->
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">
-      <a @click="signOut()" class="menu-link px-5"> Sign Out </a>
+      <a @click="signOut()" class="menu-link px-5">ออกจากระบบ</a>
     </div>
     <!--end::Menu item-->
   </div>
@@ -73,6 +81,7 @@ export default defineComponent({
     const router = useRouter();
     const i18n = useI18n();
     const store = useAuthStore();
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     i18n.locale.value = localStorage.getItem("lang")
       ? (localStorage.getItem("lang") as string)
@@ -126,6 +135,7 @@ export default defineComponent({
       currentLangugeLocale,
       countries,
       getAssetPath,
+      userData,
     };
   },
 });

@@ -245,9 +245,12 @@ export default defineComponent({
         id: 1,
         level: 1,
         topic: "รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย",
-        detail: `<ul>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1ed01rJPLbg0XzwfSsCZu65l4HNit1Ou6/view" target="_blank">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 2568</a></strong>&nbsp;<img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></span></span></li>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/1RKPEhVgohbC75uUWB7EcezIzDjuwiw1Y/view?usp=sharing" target="_blank"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2568</strong>&nbsp;<img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></a></span></span></li>
+        detail: `<ul><li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="${
+          import.meta.env.VITE_APP_API_UPLOAD_URL
+        }/froala/1.%20รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย_ประจำปีงบประมาณ2568_โครงการวิจัย.pdf" target="_blank">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 2568</a></strong>&nbsp;<img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="${
+          import.meta.env.VITE_APP_API_UPLOAD_URL
+        }/froala/2.%20รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย_ประจำปีงบประมาณ2568_โครงการนวัตกรรม.pdf" target="_blank"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2568</strong>&nbsp;<img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></a></span></span></li>
 	</ul>`,
       },
       {

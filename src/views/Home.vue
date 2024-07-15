@@ -3,7 +3,89 @@
   <div class="container p-10 mt-2 pb-0">
     <section>
       <h2 class="mt-5 mb-10 text-black">ข้ันตอนการส่งข้อเสนอโครงการ</h2>
-      <div v-html="description_steps"></div>
+      <!-- <div v-html="description_steps"></div> -->
+      <div>
+        <table
+          class="mx-auto table table-bordered table-striped"
+          style="border-collapse: collapse; border: none"
+        >
+          <tbody>
+            <tr>
+              <td colspan="3" class="text-center">
+                <h3>ขั้นตอนการขอทุนวิจัยคณะวิทยาศาสตร์ประยุกต์</h3>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center">
+                <h4>กิจกรรม</h4>
+              </td>
+              <td colspan="2" class="text-center">
+                <h4>ระยะเวลาดำเนินการ</h4>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center">1</td>
+              <td>
+                <span class="fs-5">
+                  นักวิจัยยื่นขอทุนผ่านระบบส่งข้อเสนอ
+                  <a href="http://sci.kmutnb.ac.th/rp/"
+                    >www.sci.kmutnb.ac.th/rp/</a
+                  >
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="fs-5"> 15 ก.ค. - 15 ส.ค. 67 </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center">2</td>
+              <td>
+                <span class="fs-5">
+                  คณะกรรมการวิจัย/ผู้ทรงคุณวุฒิพิจารณาโครงการ​​
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="fs-5"> 16 ส.ค. - 9 ก.ย. 67 </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="text-center">3</td>
+              <td>
+                <span class="fs-5">
+                  อนุมัติงบประมาณจากคณะกรรมการประจำส่วนงานวิชาการคณะวิทยาศาสตร์ประยุกต์​
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="fs-5"> ต.ค. 67 </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="text-center">4</td>
+              <td>
+                <span class="fs-5"> ผู้รับทุนทำสัญญารับทุนวิจัย​​​​​​​​ </span>
+              </td>
+              <td class="text-center">
+                <span class="fs-5"> ต.ค. 67 </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="text-center">5</td>
+              <td>
+                <span class="fs-5">
+                  ผู้รับทุนรับเงินทุนวิจัย
+                  (โดยงานคลังจะประสานงานกับผู้ที่ได้รับทุน)​​</span
+                >
+              </td>
+              <td class="text-center">
+                <span class="fs-5"> ม.ค. 68 </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <hr class="mt-10 mb-10" />
     </section>
 
@@ -39,9 +121,9 @@ export default defineComponent({
 		<tr>
 			<td style="height:22.5pt; text-align:center; vertical-align:middle; white-space:nowrap"><span style="font-size:16px"><span style="font-family:Verdana,Geneva,sans-serif"><span style="color:black">1</span></span></span></td>
 			<td style="height:22.5pt; vertical-align:middle; white-space:normal; width:734pt">
-			<p><span style="font-size:16px"><span style="font-family:Verdana,Geneva,sans-serif"><span style="color:black">นักวิจัยยื่นขอทุนผ่านระบบ คลิก <a href="https://www.rp.sci.kmutnb.ac.th/?page=login">www.rp.sci.kmutnb.ac.th/?page=login</a></span></span></span></p>
+			<p><span style="font-size:16px"><span style="font-family:Verdana,Geneva,sans-serif"><span style="color:black">นักวิจัยยื่นขอทุนผ่านระบบ คลิก <a href="http://sci.kmutnb.ac.th/rp/">www.rp.sci.kmutnb.ac.th/?page=login</a></span></span></span></p>
 			</td>
-			<td style="height:22.5pt; text-align:center; vertical-align:middle; white-space:nowrap"><span style="font-size:16px"><span style="font-family:Verdana,Geneva,sans-serif"><span style="color:black">3 ก.ค. - 3 ส.ค. 66</span></span></span></td>
+			<td style="height:22.5pt; text-align:center; vertical-align:middle; white-space:nowrap"><span style="font-size:16px"><span style="font-family:Verdana,Geneva,sans-serif"><span style="color:black">15 ก.ค. - 15 ส.ค. 67</span></span></span></td>
 		</tr>
 		<tr>
 			<td style="height:22.5pt; text-align:center; vertical-align:middle; white-space:nowrap"><span style="font-size:16px"><span style="font-family:Verdana,Geneva,sans-serif"><span style="color:black">2</span></span></span></td>
@@ -164,11 +246,11 @@ export default defineComponent({
         level: 1,
         topic: "รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย",
         detail: `<ul>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1ed01rJPLbg0XzwfSsCZu65l4HNit1Ou6/view">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 2567</a></strong>&nbsp;<img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></span></span></li>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/1RKPEhVgohbC75uUWB7EcezIzDjuwiw1Y/view?usp=sharing"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 256</strong></a><strong><a href="https://drive.google.com/file/d/1RKPEhVgohbC75uUWB7EcezIzDjuwiw1Y/view?usp=sharing">6</a></strong>&nbsp;</span></span></li>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/11X_StJp_pK13sYy9VUrNObKb5f8k0yWj/view?usp=sharing"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 2565&nbsp;</strong></a>&nbsp;</span></span></li>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/1ZqwOcibEHF4Lqm2lmtyjV8HmnCmPdvjt/view?usp=sharing"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย ประจำปีงบประมาณ&nbsp;2564</strong></a></span></span></li>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/1JldVsIguU5CsqjGRxegJ3wYCe0lni6yf/view?usp=sharing"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย ประจำปีงบประมาณ&nbsp;</strong><strong>2563</strong></a>&nbsp;</span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1ed01rJPLbg0XzwfSsCZu65l4HNit1Ou6/view" target="_blank">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 2567</a></strong>&nbsp;<img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/1RKPEhVgohbC75uUWB7EcezIzDjuwiw1Y/view?usp=sharing" target="_blank"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 256</strong></a><strong><a href="https://drive.google.com/file/d/1RKPEhVgohbC75uUWB7EcezIzDjuwiw1Y/view?usp=sharing">6</a></strong>&nbsp;</span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/11X_StJp_pK13sYy9VUrNObKb5f8k0yWj/view?usp=sharing" target="_blank"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย ประจำปีงบประมาณ 2565&nbsp;</strong></a>&nbsp;</span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/1ZqwOcibEHF4Lqm2lmtyjV8HmnCmPdvjt/view?usp=sharing" target="_blank"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย ประจำปีงบประมาณ&nbsp;2564</strong></a></span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><a href="https://drive.google.com/file/d/1JldVsIguU5CsqjGRxegJ3wYCe0lni6yf/view?usp=sharing" target="_blank"><strong>รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย ประจำปีงบประมาณ&nbsp;</strong><strong>2563</strong></a>&nbsp;</span></span></li>
 </ul>`,
       },
       {
@@ -176,9 +258,9 @@ export default defineComponent({
         level: 2,
         topic: "รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย รูปแบบโครงการวิจัย",
         detail: `<ul>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1lmp05MN-PJ3TCXizdNuZzE5xMBA3HNz0/view">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย&nbsp;รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2567&nbsp;</a>&nbsp;</strong><img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></span></span></li>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1SBK-vrQpW7azjLqZwukCwxdJBRi0pVmS/view?usp=sharing">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย&nbsp;รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2566&nbsp;</a>&nbsp;</strong></span></span></li>
-	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1BNiAxMJxeMsxBLUFcmRVK43GiqcObOV4/view?usp=sharing">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย&nbsp;รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2565&nbsp;</a>&nbsp;</strong></span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1lmp05MN-PJ3TCXizdNuZzE5xMBA3HNz0/view" target="_blank">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย&nbsp;รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2567&nbsp;</a>&nbsp;</strong><img alt="" src="https://www.fg-a.com/new/new06p.gif" style="height:17px; width:48px"></span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1SBK-vrQpW7azjLqZwukCwxdJBRi0pVmS/view?usp=sharing" target="_blank">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย&nbsp;รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2566&nbsp;</a>&nbsp;</strong></span></span></li>
+	<li><span style="font-family:Verdana,Geneva,sans-serif"><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1BNiAxMJxeMsxBLUFcmRVK43GiqcObOV4/view?usp=sharing" target="_blank">รายละเอียดหลักเกณฑ์การขอสนับสนุนทุนวิจัย&nbsp;รูปแบบโครงการนวัตกรรม ประจำปีงบประมาณ 2565&nbsp;</a>&nbsp;</strong></span></span></li>
 </ul>`,
       },
       {
@@ -186,7 +268,7 @@ export default defineComponent({
         level: 3,
         topic: "ประกาศระเบียบ ทุนวิจัยคณะวิทยาศาสตร์ประยุกต์",
         detail: `<ul>
-	<li><a href="https://drive.google.com/file/d/1YPklHtKsuwdynfAUZR5cDMBbbJ3_LYup/view?usp=sharing"><span style="font-size:16px"><strong>ประกาศคณะวิทยาศาสตร์ประยุกต์ เรื่องหลักเกณฑ์การจัดสรรและการจ่ายเงินทุนสนุบสนุนการวิจัย</strong></span></a>&nbsp;</li>
+	<li><a href="https://drive.google.com/file/d/1YPklHtKsuwdynfAUZR5cDMBbbJ3_LYup/view?usp=sharing" target="_blank"><span style="font-size:16px" ><strong>ประกาศคณะวิทยาศาสตร์ประยุกต์ เรื่องหลักเกณฑ์การจัดสรรและการจ่ายเงินทุนสนุบสนุนการวิจัย</strong></span></a>&nbsp;</li>
 </ul>`,
       },
       {
@@ -194,8 +276,8 @@ export default defineComponent({
         level: 4,
         topic: "หนังสือยืนยันการร่วมโครงการจากหน่วยงานภายนอกมหาวิทยาลัย",
         detail: `<ul>
-	<li><a href="https://drive.google.com/file/d/1dhzAWt0fecTVG0doLTLudZgxZ6qN0EWb/view?usp=sharing"><span style="font-size:16px"><strong>แบบฟอร์มหนังสือยืนยันการร่วมโครงการจากหน่วยงานภายนอกมหาวิทยาลัย&nbsp;<span style="color:#ecf0f1"><span style="background-color:#3498db">(Word)</span></span></strong></span></a></li>
-	<li><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1b9SW_I6xutoTyBKPfXooXuK-lLcUMI8W/view?usp=sharing">แบบฟอร์มหนังสือยืนยันการร่วมโครงการจากหน่วยงานภายนอกมหาวิทยาลัย</a>&nbsp;<span style="color:#ffffff"><span style="background-color:#e74c3c">(Pdf.)</span></span></strong></span></li>
+	<li><a href="https://drive.google.com/file/d/1dhzAWt0fecTVG0doLTLudZgxZ6qN0EWb/view?usp=sharing" target="_blank"><span style="font-size:16px"><strong>แบบฟอร์มหนังสือยืนยันการร่วมโครงการจากหน่วยงานภายนอกมหาวิทยาลัย&nbsp;<span style="color:#ecf0f1"><span style="background-color:#3498db">(Word)</span></span></strong></span></a></li>
+	<li><span style="font-size:16px"><strong><a href="https://drive.google.com/file/d/1b9SW_I6xutoTyBKPfXooXuK-lLcUMI8W/view?usp=sharing" target="_blank">แบบฟอร์มหนังสือยืนยันการร่วมโครงการจากหน่วยงานภายนอกมหาวิทยาลัย</a>&nbsp;<span style="color:#ffffff"><span style="background-color:#e74c3c">(Pdf.)</span></span></strong></span></li>
 </ul>`,
       },
     ]);

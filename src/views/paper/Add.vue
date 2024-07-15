@@ -208,7 +208,7 @@ export default defineComponent({
       department_text: "",
       phone_number: "",
       expertise: "",
-      researcher_type: null,
+      researcher_type_id: null,
       percentage: null,
       paper_id: null,
     };
@@ -286,7 +286,7 @@ export default defineComponent({
       department_text: Yup.string().nullable().label("หน่วยงานอื่นๆ"),
       phone_number: Yup.string().nullable().label("เบอร์โทรศัพท์"),
       expertise: Yup.string().nullable().label("ความชำนาญ/ความสนใจพิเศษ"),
-      researcher_type: Yup.object()
+      researcher_type_id: Yup.object()
         .required("${path} จำเป็นต้องระบุ")
         .label("ประเภท"),
       percentage: Yup.number()
@@ -360,7 +360,7 @@ export default defineComponent({
       department_text: { error: 0, text: "" },
       phone_number: { error: 0, text: "" },
       expertise: { error: 0, text: "" },
-      researcher_type: { error: 0, text: "" },
+      researcher_type_id: { error: 0, text: "" },
       percentage: { error: 0, text: "" },
     };
     const researcher_errors = reactive<any>({
@@ -617,7 +617,7 @@ export default defineComponent({
           department_text: researcher[i].department_text,
           phone_number: researcher[i].phone_number,
           expertise: researcher[i].expertise,
-          researcher_type: researcher[i].researcher_type?.id,
+          researcher_type_id: researcher[i].researcher_type_id?.id,
           percentage: researcher[i].percentage,
           paper_id: item.id,
           is_active: 1,

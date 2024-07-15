@@ -389,7 +389,6 @@ export default defineComponent({
       new_item,
       onClose,
       generatePDF,
-      l;\,
       html2Pdf,
     };
   },

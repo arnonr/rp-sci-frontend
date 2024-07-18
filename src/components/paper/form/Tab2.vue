@@ -104,15 +104,15 @@
                 :options="selectOptions.researcher_types"
                 class="form-control"
                 :clearable="false"
-                v-model="rs.researcher_type"
+                v-model="rs.researcher_type_id"
               >
               </v-select>
               <div
                 class="d-block mt-1"
-                v-if="researcher_errors.researcher_type.error == 1"
+                v-if="researcher_errors.researcher_type_id.error == 1"
               >
                 <span role="alert" class="text-danger">{{
-                  researcher_errors.researcher_type.text
+                  researcher_errors.researcher_type_id.text
                 }}</span>
               </div>
             </div>

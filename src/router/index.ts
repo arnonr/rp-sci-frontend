@@ -1,6 +1,7 @@
 import {
   createRouter,
   createWebHistory,
+  createWebHashHistory,
   type RouteRecordRaw,
 } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
@@ -56,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "จัดการผู้ใช้งาน",
         },
       },
-      
+
       {
         path: "/paper",
         name: "paper",
@@ -595,7 +596,8 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  history: createWebHistory('/rp/'),//createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
+  //history: createWebHistory("/rp/"), //createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to) {
     // If the route has a hash, scroll to the section with the specified ID; otherwise, scroll toc the top of the page.

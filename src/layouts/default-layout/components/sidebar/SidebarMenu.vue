@@ -33,7 +33,9 @@
                 menuItem.heading &&
                 ((menuItem.route == '/admin-paper' &&
                   userData.data.level == 1) ||
-                  menuItem.route != '/admin-paper')
+                  (menuItem.route == '/user' && userData.data.level == 1) ||
+                  (menuItem.route != '/admin-paper' &&
+                    menuItem.route != '/user'))
               "
             >
               <div class="menu-item">
